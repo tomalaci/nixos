@@ -70,7 +70,6 @@
   environment.systemPackages = with pkgs; [
     # Base required packages
     home-manager
-    age
     sops
     git
     nodejs_26
@@ -89,6 +88,8 @@
     ripgrep
     wget
     yq
+    kubectl
+    k9s
 
     # Hardware utilities
     gparted-full
