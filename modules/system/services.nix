@@ -12,6 +12,9 @@
     };
   };
 
+  # Tailscale
+  services.tailscale.enable = true;
+
   # Virtualization
   # Note: "virtualisation" is the correct config option (spelled after the British English convention)
   virtualisation.docker.enable = true;
