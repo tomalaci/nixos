@@ -171,7 +171,7 @@ This flake's shared shells remain useful for ad hoc local terminals and as
 building blocks for project containers:
 
 ```sh
-nix develop /home/tomalaci/src/tomalaci/nixos#web
+nix develop /home/tomalaci/src/nixos#web
 ```
 
 ## Commands
@@ -188,8 +188,8 @@ nix build .#homeConfigurations.tomalaci.activationPackage --no-link
 Runtime switch commands:
 
 ```sh
-sudo nixos-rebuild switch --flake /home/tomalaci/src/tomalaci/nixos#desktop
-home-manager switch -b hm-backup --flake /home/tomalaci/src/tomalaci/nixos#tomalaci
+sudo nixos-rebuild switch --flake /home/tomalaci/src/nixos#desktop
+home-manager switch -b hm-backup --flake /home/tomalaci/src/nixos#tomalaci
 ```
 
 After `nh` has been activated, the dotfiles zsh environment exports `NH_FLAKE`

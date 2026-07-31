@@ -15,10 +15,10 @@
                 // You can write arbitrary Nix expressions here, to produce valid "options" declaration result.
                 // Tip: for flake-based configuration, utilize `builtins.getFlake`
                 "nixos": {
-                    "expr": "(builtins.getFlake \"/home/tomalaci/src/tomalaci/nixos\").nixosConfigurations.desktop.options",
+                    "expr": "(builtins.getFlake \"/home/tomalaci/src/nixos\").nixosConfigurations.desktop.options",
                 },
                 "home-manager": {
-                    "expr": "(builtins.getFlake \"/home/tomalaci/src/tomalaci/nixos\").homeConfigurations.tomalaci.options",
+                    "expr": "(builtins.getFlake \"/home/tomalaci/src/nixos\").homeConfigurations.tomalaci.options",
                 },
             },
         }
