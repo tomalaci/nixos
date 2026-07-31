@@ -1,0 +1,32 @@
+# Ignore build outputs from performing a nix-build or `nix build` command
+result
+result-*
+
+# Ignore automatically generated direnv output
+.direnv
+
+# Ignore NixOS interactive test driver history
+**/.nixos-test-history
+
+# Secrets are ignored by default. Allowlist encrypted SOPS files deliberately.
+modules/secrets/*
+!modules/secrets/.gitkeep
+!modules/secrets/*.enc.yaml
+!modules/secrets/*.enc.yml
+!modules/secrets/*.enc.json
+!modules/secrets/*.enc.env
+!modules/secrets/*.enc.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.cache
+*.bak
+
+# Temporary directories
+tmp/
+temp/
+logs/
+cache/
+backup/
