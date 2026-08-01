@@ -1,5 +1,6 @@
 # Font configuration for the system, including general-purpose and developer fonts.
 {pkgs, ...}: {
+  fonts.fontDir.enable = true;
   fonts.packages = with pkgs; [
     # Massive Unicode coverage
     noto-fonts
@@ -23,5 +24,8 @@
     inter
     source-sans
     source-serif
+
+    # Fancy fonts
+    font-awesome
   ];
 }
