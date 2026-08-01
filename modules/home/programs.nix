@@ -9,6 +9,7 @@
     htop
     jellyfin-media-player
     krita
+    inkscape
     mpv
     qbittorrent
     slack
