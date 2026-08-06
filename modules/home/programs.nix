@@ -16,7 +16,6 @@
     vesktop
     upscayl
     yt-dlp
-    megasync
     kdePackages.kcalc
   ];
 }
