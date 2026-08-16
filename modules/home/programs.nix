@@ -17,5 +17,6 @@
     upscayl
     yt-dlp
     kdePackages.kcalc
+    libreoffice
   ];
 }
