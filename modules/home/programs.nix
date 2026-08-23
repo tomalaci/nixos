@@ -18,7 +18,5 @@
     yt-dlp
     kdePackages.kcalc
     libreoffice
-    thunderbird
-    protonmail-bridge
   ];
 }
