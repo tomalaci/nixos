@@ -18,6 +18,5 @@
     yt-dlp
     kdePackages.kcalc
     libreoffice
-    thunderbird
   ];
 }
