@@ -12,6 +12,8 @@ in {
     ".config/mpv".source = dotfile "config/mpv";
     ".config/codebook".source = dotfile "config/codebook";
     ".config/plasma-localerc".source = dotfile "config/plasma/plasma-localerc";
+    ".config/kde-pinned-apps.conf".source = dotfile "config/plasma/kde-pinned-apps.conf";
+    ".config/autostart/kde-fix-pinned-apps.desktop".source = dotfile "config/plasma/kde-fix-pinned-apps.desktop";
     ".zshenv".source = dotfile "zsh/.zshenv";
     ".local/bin/context7-mcp".source = dotfile "local/bin/context7-mcp";
     ".local/bin/kde-fix-pinned-apps".source = dotfile "local/bin/kde-fix-pinned-apps";
