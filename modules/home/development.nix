@@ -33,5 +33,12 @@
     nixd
     nvd
     statix
+
+    # Cloud services tooling
+    gh
+    awscli2
+    hcloud
+    cloudflared
+    gdrive
   ];
 }

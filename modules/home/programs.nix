@@ -5,7 +5,6 @@
     fastfetch
     ffmpeg-full
     firefox
-    gh
     htop
     jellyfin-media-player
     krita
