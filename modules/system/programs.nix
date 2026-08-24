@@ -71,9 +71,15 @@
     # Base required packages
     home-manager
     sops
+
+    # Base development packages
     git
+    gnumake
+    bubblewrap
     nodejs_26
     python3
+    go
+    rustc
 
     # CLI browsing, search, i/o parsing utilities
     bat
@@ -88,8 +94,6 @@
     ripgrep
     wget
     yq
-    kubectl
-    k9s
 
     # Hardware utilities
     gparted-full

@@ -21,7 +21,6 @@
 
   home.packages = with pkgs; [
     # Agent and AI command-line tools
-    bubblewrap
     codex
     devcontainer
 
