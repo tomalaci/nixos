@@ -40,5 +40,8 @@
     hcloud
     cloudflared
     gdrive
+    terraform
+    kubectl
+    k9s
   ];
 }
