@@ -8,11 +8,11 @@
       },
       "locked": {
         "dir": "nix",
-        "lastModified": 1787567329,
-        "narHash": "sha256-7tZEeCPzbAircRnLzEWb/4UXDcVMyo77E6g8DEaOhAM=",
+        "lastModified": 1787740097,
+        "narHash": "sha256-LGxXTRpkXisuARkWy4uiSsdcKDgAJmyKC+vRkkMv2RE=",
         "owner": "loteran",
         "repo": "Arctis-Sound-Manager",
-        "rev": "0d6bf8a53642755f3f7a332efccad5e6c9f90589",
+        "rev": "0fc942e43116f2740dcfbff0dc73400546cf6277",
         "type": "github"
       },
       "original": {
@@ -29,11 +29,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787540599,
-        "narHash": "sha256-MHwk52ty3NsLhq9a1IbIfBJZlCUJIdiUYFo52JLK9hY=",
+        "lastModified": 1787750582,
+        "narHash": "sha256-FfIAV44k33i+IjC1+new2KyjyVGUzGtV89VHVP4eK1U=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "03f4cd46bc1dd4f3a96da778d2ce9f7ce39dd450",
+        "rev": "0a364342a66bcecfc8a00d2fc38c6c29eee7bc5e",
         "type": "github"
       },
       "original": {
