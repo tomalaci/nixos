@@ -94,6 +94,7 @@
     ripgrep
     wget
     yq
+    megasync
 
     # Hardware utilities
     gparted-full
