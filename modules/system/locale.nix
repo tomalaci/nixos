@@ -6,6 +6,9 @@
     "C.UTF-8/UTF-8"
     "en_DK.UTF-8/UTF-8"
     "en_US.UTF-8/UTF-8"
+    "sv_SE.UTF-8/UTF-8"
+    "ja_JP.UTF-8/UTF-8"
+    "lv_LV.UTF-8/UTF-8"
   ];
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
