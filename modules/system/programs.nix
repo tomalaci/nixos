@@ -80,6 +80,7 @@
     python3
     go
     rustc
+    binutils
 
     # CLI browsing, search, i/o parsing utilities
     bat
