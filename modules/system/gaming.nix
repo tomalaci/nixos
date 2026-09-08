@@ -44,4 +44,14 @@
     mesa-demos # glxgears etc., also includes/replaces glxinfo
     mangohud
   ];
+
+  # Extra locale settings
+  i18n.extraLocales = [
+    "ja_JP.UTF-8/UTF-8"
+  ];
+
+  fonts.packages = with pkgs; [
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+  ];
 }
