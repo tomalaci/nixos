@@ -96,6 +96,7 @@
     wget
     yq
     megasync
+    megacmd
 
     # Hardware utilities
     gparted-full
