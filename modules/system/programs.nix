@@ -95,6 +95,7 @@
     ripgrep
     wget
     yq
+    megasync
     megacmd
 
     # Hardware utilities
