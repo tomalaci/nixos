@@ -53,6 +53,9 @@
   # Peripheral services
   services.hardware.openrgb.enable = true;
   services.udev.packages = [pkgs.rivalcfg];
+  services.udev.extraRules = ''
+    KERNEL=="hidraw*", ATTRS{idVendor}=="1038", MODE="0666"
+  ''; # Extra rules for steelseries devices
   services.arctis-sound-manager.enable = true;
   services.input-remapper = {
     enable = true;
