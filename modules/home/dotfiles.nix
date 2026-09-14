@@ -7,6 +7,7 @@ in {
     ".config/Code/User/settings.json".source = dotfile "config/vscode/settings.json";
     ".config/zsh".source = dotfile "zsh";
     ".config/starship.toml".source = dotfile "config/starship.toml";
+    ".codex/AGENTS.md".source = dotfile "config/codex/AGENTS.md";
     ".codex/config.toml".source = dotfile "config/codex/config.toml";
     ".codex/rules/default.rules".source = dotfile "config/codex/rules/default.rules";
     ".config/mpv".source = dotfile "config/mpv";

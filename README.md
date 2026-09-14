@@ -117,8 +117,17 @@ Home Manager configures XDG base directories, session variables, user
 
 Application configuration is intentionally kept out of this repo and linked
 from `${HOME}/src/dotfiles/home` with out-of-store symlinks. Current links cover
-VS Code settings, Zed settings, zsh startup files, Codex config and rules, mpv
-config, and `~/.local/bin/context7-mcp`.
+VS Code settings, Zed settings, zsh startup files, Codex config, global
+instructions and rules, mpv config, and `~/.local/bin/context7-mcp`.
+
+Codex's global `~/.codex/AGENTS.md` comes from
+`~/src/dotfiles/home/config/codex/AGENTS.md`. It describes the host tools, Nix
+development shells, configuration ownership, and the expectation that service
+CLIs such as `aws` and `gh` are already authenticated. Agents should pause work
+and ask for a user login when credentials are missing or expired. Edit the
+dotfiles source to update guidance for new Codex sessions in any repository;
+an existing `~/.codex/AGENTS.override.md` takes precedence, and a custom
+`CODEX_HOME` needs its own link.
 
 Home modules install or configure:
 
