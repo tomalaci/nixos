@@ -3,12 +3,24 @@
   config,
   ...
 }: {
+  # NH nix helper cli config
+  programs.nh = {
+    enable = true;
+    clean = {
+      enable = true;
+      dates = "weekly";
+      extraArgs = "--keep-since 14d";
+    };
+  };
+
+  # System programs and utilities
   programs.zsh = {
     enable = true;
   };
-
+  programs.mtr.enable = true;
   programs.ssh.startAgent = true;
 
+  # Nix global library linking
   programs.nix-ld = {
     enable = true;
     libraries = with pkgs; [
@@ -58,17 +70,8 @@
     ];
   };
 
-  programs.nh = {
-    enable = true;
-    clean = {
-      enable = true;
-      dates = "weekly";
-      extraArgs = "--keep-since 14d";
-    };
-  };
-
   environment.systemPackages = with pkgs; [
-    # Base required packages
+    # Nix tooling
     home-manager
     sops
 
@@ -84,7 +87,6 @@
 
     # CLI browsing, search, i/o parsing utilities
     bat
-    curl
     doggo
     dua
     eza
@@ -93,8 +95,18 @@
     fzf
     jq
     ripgrep
-    wget
     yq
+
+    # Network/Web utilities
+    curl
+    whois
+    bind
+    nmap
+    traceroute
+    trippy
+    wget
+    yt-dlp
+    httpie
 
     # Hardware utilities
     gparted-full

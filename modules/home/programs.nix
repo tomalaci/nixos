@@ -14,7 +14,6 @@
     slack
     vesktop
     upscayl
-    yt-dlp
     kdePackages.kcalc
     kdePackages.kdialog
     libreoffice
