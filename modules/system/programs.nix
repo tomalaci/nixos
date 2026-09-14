@@ -121,5 +121,17 @@
     gzip
     p7zip
     unrar
+
+    # Cloud services
+    gh
+    awscli2
+    hcloud
+    cloudflared
+    gdrive
+    terraform
+    kubectl
+    k9s
+    megasync
+    megacmd
   ];
 }
