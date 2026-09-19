@@ -17,5 +17,7 @@
     kdePackages.kcalc
     kdePackages.kdialog
     libreoffice
+    godot
+    blender
   ];
 }
