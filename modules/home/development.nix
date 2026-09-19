@@ -20,11 +20,7 @@
   };
 
   home.packages = with pkgs; [
-    # Agent and AI command-line tools
-    codex
     devcontainer
-
-    # Nix language tooling
     alejandra
     deadnix
     nix-output-monitor

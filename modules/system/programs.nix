@@ -134,5 +134,8 @@
     k9s
     megasync
     megacmd
+
+    # AI agents
+    codex
   ];
 }
