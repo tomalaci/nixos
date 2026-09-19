@@ -84,6 +84,7 @@
     go
     rustc
     binutils
+    perl
 
     # CLI browsing, search, i/o parsing utilities
     bat
