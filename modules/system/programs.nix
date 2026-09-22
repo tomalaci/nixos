@@ -109,6 +109,11 @@
     yt-dlp
     httpie
 
+    # Database and data service tools
+    postgresql
+    clickhouse
+    sqlite
+
     # Hardware utilities
     gparted-full
     pciutils
