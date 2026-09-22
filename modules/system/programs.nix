@@ -97,6 +97,7 @@
     jq
     ripgrep
     yq
+    openssl
 
     # Network/Web utilities
     curl
