@@ -16,6 +16,7 @@ in {
     ".dsh/cordis.patch.yml".source = dotfile "config/dsh/cordis.patch.yml";
     ".config/opencode/AGENTS.md".source = dotfile "config/ai/AGENTS.md";
     ".config/opencode/opencode.jsonc".source = dotfile "config/opencode/opencode.jsonc";
+    ".config/opencode/tui.json".source = dotfile "config/opencode/tui.json";
     ".config/mpv".source = dotfile "config/mpv";
     ".config/codebook".source = dotfile "config/codebook";
     ".config/plasma-localerc".source = dotfile "config/plasma/plasma-localerc";
