@@ -82,6 +82,7 @@
       git
       gnumake
       bubblewrap
+      socat
       devcontainer
       nodejs_26
       python3
@@ -165,5 +166,7 @@
       codex
       claude-code
       dsh
+      opencode
+      opencode-desktop
     ]);
 }

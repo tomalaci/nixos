@@ -10,6 +10,10 @@ in {
     ".codex/AGENTS.md".source = dotfile "config/codex/AGENTS.md";
     ".codex/config.toml".source = dotfile "config/codex/config.toml";
     ".codex/rules/default.rules".source = dotfile "config/codex/rules/default.rules";
+    ".claude/CLAUDE.md".source = dotfile "config/claude/CLAUDE.md";
+    ".claude/settings.json".source = dotfile "config/claude/settings.json";
+    ".dsh/AGENTS.md".source = dotfile "config/dsh/AGENTS.md";
+    ".dsh/cordis.patch.yml".source = dotfile "config/dsh/cordis.patch.yml";
     ".config/mpv".source = dotfile "config/mpv";
     ".config/codebook".source = dotfile "config/codebook";
     ".config/plasma-localerc".source = dotfile "config/plasma/plasma-localerc";

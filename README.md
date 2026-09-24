@@ -118,7 +118,8 @@ Home Manager configures XDG base directories, session variables, user
 Application configuration is intentionally kept out of this repo and linked
 from `${HOME}/src/dotfiles/home` with out-of-store symlinks. Current links cover
 VS Code settings, Zed settings, zsh startup files, Codex config, global
-instructions and rules, mpv config, and `~/.local/bin/context7-mcp`.
+instructions and rules, Claude Code settings and instructions, DeepSeek Harness
+settings and instructions, mpv config, and `~/.local/bin/context7-mcp`.
 
 Codex's global `~/.codex/AGENTS.md` comes from
 `~/src/dotfiles/home/config/codex/AGENTS.md`. It describes the host tools, Nix
@@ -138,7 +139,7 @@ Home modules install or configure:
 - Slack, qBittorrent, Firefox, Krita, Jellyfin Desktop, Vesktop, and mpv
 - utility packages including `ffmpeg-full`, `btop`, `gh`, `htop`, and
   `fastfetch`
-- Codex CLI, Bubblewrap, and the Dev Containers CLI
+- Codex CLI, Bubblewrap, Socat for Claude Code sandboxing, and the Dev Containers CLI
 - VS Code and Zed through Home Manager with mutable in-editor
   settings and extensions
 - Nix tooling: Alejandra, deadnix, nix-output-monitor, nix-tree, nixd, nvd, and
