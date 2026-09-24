@@ -119,7 +119,8 @@ Application configuration is intentionally kept out of this repo and linked
 from `${HOME}/src/dotfiles/home` with out-of-store symlinks. Current links cover
 VS Code settings, Zed settings, zsh startup files, Codex config, global
 instructions and rules, Claude Code settings and instructions, DeepSeek Harness
-settings and instructions, mpv config, and `~/.local/bin/context7-mcp`.
+settings and instructions, OpenCode settings and instructions, mpv config, and
+`~/.local/bin/context7-mcp`.
 
 Codex's global `~/.codex/AGENTS.md` comes from
 `~/src/dotfiles/home/config/codex/AGENTS.md`. It describes the host tools, Nix
