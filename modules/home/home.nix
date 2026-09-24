@@ -14,6 +14,19 @@
     stateVersion = "26.05";
   };
 
+  # Git configuration
+  programs.git = {
+    enable = true;
+    settings = {
+      init.defaultBranch = "main";
+      pull.rebase = true;
+      user = {
+        email = "tomass.lacis@pm.me";
+        name = "Tomass Lacis";
+      };
+    };
+  };
+
   # Login environment variables
   home.sessionVariables = {
     XDG_BIN_HOME = lib.mkDefault config.xdg.binHome;
@@ -28,6 +41,5 @@
     ./dotfiles.nix
     ./shell.nix
     ./programs.nix
-    ./development.nix
   ];
 }

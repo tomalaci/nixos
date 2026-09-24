@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  inputs,
   ...
 }: {
   # NH nix helper cli config
@@ -70,78 +71,99 @@
     ];
   };
 
-  environment.systemPackages = with pkgs; [
-    # Nix tooling
-    home-manager
-    sops
+  environment.systemPackages =
+    (with pkgs; [
+      # Base OS tooling
+      home-manager
+      sops
+      fastfetch
 
-    # Base development packages
-    git
-    gnumake
-    bubblewrap
-    nodejs_26
-    python3
-    go
-    rustc
-    binutils
-    perl
+      # Base development packages
+      git
+      gnumake
+      bubblewrap
+      devcontainer
+      nodejs_26
+      python3
+      go
+      rustc
+      binutils
+      perl
 
-    # CLI browsing, search, i/o parsing utilities
-    bat
-    doggo
-    dua
-    eza
-    fd
-    file
-    fzf
-    jq
-    ripgrep
-    yq
-    openssl
+      # Nix tooling
+      alejandra
+      deadnix
+      nix-output-monitor
+      nix-tree
+      nixd
+      nvd
+      statix
 
-    # Network/Web utilities
-    curl
-    whois
-    bind
-    nmap
-    traceroute
-    trippy
-    wget
-    yt-dlp
-    httpie
+      # CLI browsing, search, i/o parsing utilities
+      bat
+      doggo
+      dua
+      eza
+      fd
+      file
+      fzf
+      jq
+      ripgrep
+      yq
+      openssl
 
-    # Database and data service tools
-    postgresql
-    clickhouse
-    sqlite
+      # Network utilities
+      curl
+      whois
+      bind
+      nmap
+      traceroute
+      trippy
+      wget
+      httpie
 
-    # Hardware utilities
-    gparted-full
-    pciutils
-    pcsc-tools
-    usbutils
-    yubikey-manager
-    openrgb
-    rivalcfg
+      # Media utilities
+      yt-dlp
+      ffmpeg-full
+      mpv
 
-    # Archives and installers
-    gzip
-    p7zip
-    unrar
+      # Database and data service tools
+      postgresql
+      clickhouse
+      sqlite
 
-    # Cloud services
-    gh
-    awscli2
-    hcloud
-    cloudflared
-    gdrive
-    terraform
-    kubectl
-    k9s
-    megasync
-    megacmd
+      # Hardware utilities
+      btop
+      htop
+      gparted-full
+      pciutils
+      pcsc-tools
+      usbutils
+      yubikey-manager
+      openrgb
+      rivalcfg
 
-    # AI agents
-    codex
-  ];
+      # Archives and installers
+      gzip
+      p7zip
+      unrar
+
+      # Cloud services
+      gh
+      awscli2
+      hcloud
+      cloudflared
+      gdrive
+      terraform
+      kubectl
+      k9s
+      megasync
+      megacmd
+    ])
+    ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
+      # LLM agents
+      codex
+      claude-code
+      dsh
+    ]);
 }

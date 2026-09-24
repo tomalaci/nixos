@@ -7,6 +7,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    llm-agents.url = "github:numtide/llm-agents.nix";
     arctis-sound-manager = {
       url = "github:loteran/Arctis-Sound-Manager?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";

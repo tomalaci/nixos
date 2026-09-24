@@ -1,15 +1,18 @@
 # Desktop applications and general-purpose utilities.
 {pkgs, ...}: {
+  # Visual Studio Code configuration
+  programs.vscode = {
+    enable = true;
+    package = pkgs.vscode;
+    mutableExtensionsDir = true;
+  };
+
+  # Other home packages
   home.packages = with pkgs; [
-    btop
-    fastfetch
-    ffmpeg-full
     firefox
-    htop
     jellyfin-media-player
     krita
     inkscape
-    mpv
     qbittorrent
     slack
     vesktop
