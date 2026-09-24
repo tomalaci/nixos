@@ -62,103 +62,6 @@
     system = "x86_64-linux";
     pkgs = mkPkgs system;
 
-    mkDevShells = pkgs: let
-      nixPackages = with pkgs; [
-        alejandra
-        deadnix
-        nix-output-monitor
-        nix-tree
-        nixd
-        nvd
-        statix
-      ];
-
-      goPackages = with pkgs; [
-        delve
-        go
-        go-tools
-        golangci-lint
-        gopls
-      ];
-
-      k8sHelm = pkgs.wrapHelm pkgs.kubernetes-helm {
-        plugins = with pkgs.kubernetes-helmPlugins; [
-          helm-diff
-          helm-secrets
-        ];
-      };
-
-      k8sPackages = with pkgs; [
-        k8sHelm
-        k9s
-        kind
-        kubectl
-        kubectx
-        minikube
-        stern
-      ];
-
-      python = pkgs.python3.withPackages (python-pkgs:
-        with python-pkgs; [
-          ipython
-          pip
-          virtualenv
-        ]);
-
-      pythonPackages = with pkgs; [
-        basedpyright
-        python
-        ruff
-        uv
-      ];
-
-      rustPackages = with pkgs; [
-        cargo
-        cargo-edit
-        cargo-nextest
-        cargo-watch
-        clippy
-        rust-analyzer
-        rust-bindgen
-        rustc
-        rustfmt
-      ];
-
-      typstPackages = with pkgs; [
-        tinymist
-        typstyle
-        typst
-      ];
-
-      webPackages = with pkgs; [
-        eslint
-        nodejs_26
-        pnpm
-        prettier
-        typescript
-        typescript-language-server
-        yarn
-      ];
-
-      mkShell = packages: pkgs.mkShell {inherit packages;};
-    in {
-      default = mkShell nixPackages;
-      go = mkShell goPackages;
-      k8s = mkShell k8sPackages;
-      python = mkShell pythonPackages;
-      rust = mkShell rustPackages;
-      typst = mkShell typstPackages;
-      web = mkShell webPackages;
-      full = mkShell (
-        nixPackages
-        ++ goPackages
-        ++ k8sPackages
-        ++ pythonPackages
-        ++ rustPackages
-        ++ typstPackages
-        ++ webPackages
-      );
-    };
   in {
     overlays.default = import ./modules/overlays/default.nix;
 
@@ -190,7 +93,5 @@
         fi
       '';
     };
-
-    devShells.${system} = mkDevShells pkgs;
   };
 }

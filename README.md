@@ -11,7 +11,6 @@ This flake defines:
   user.
 - an embedded Home Manager profile inside the `desktop` NixOS configuration.
 - `overlays.default`, the local overlay hook.
-- opt-in development shells for language and project toolchains.
 - `formatter.x86_64-linux`, an Alejandra-backed formatter for `nix fmt`.
 
 Core inputs are `nixpkgs/nixos-unstable` and `home-manager`. `mkPkgs` enables
@@ -46,13 +45,11 @@ live under `/mnt/sata-a`, `/mnt/sata-b`, and `/mnt/sata-c`.
 
 ```text
 .
-├── CODEX.md
 ├── README.md
 ├── flake.lock
 ├── flake.nix
 └── modules/
     ├── home/
-    │   ├── development.nix
     │   ├── dotfiles.nix
     │   ├── home.nix
     │   ├── programs.nix
@@ -82,7 +79,7 @@ Important entry points:
 - `modules/system/system.nix` contains shared NixOS basics and imports
   boot, fonts, gaming, KDE, locale, programs, services, and user modules.
 - `modules/home/home.nix` contains shared Home Manager basics and imports
-  dotfiles, shell, programs, and development modules.
+  dotfiles, shell, and programs modules.
 
 ## System Profile
 
@@ -117,19 +114,16 @@ Home Manager configures XDG base directories, session variables, user
 
 Application configuration is intentionally kept out of this repo and linked
 from `${HOME}/src/dotfiles/home` with out-of-store symlinks. Current links cover
-VS Code settings, Zed settings, zsh startup files, Codex config, global
-instructions and rules, Claude Code settings and instructions, DeepSeek Harness
-settings and instructions, OpenCode settings and instructions, mpv config, and
+VS Code settings, zsh startup files, Codex config and rules, Claude Code
+settings, DeepSeek Harness settings, OpenCode settings, mpv config, and
 `~/.local/bin/context7-mcp`.
 
-Codex's global `~/.codex/AGENTS.md` comes from
-`~/src/dotfiles/home/config/codex/AGENTS.md`. It describes the host tools, Nix
-development shells, configuration ownership, and the expectation that service
-CLIs such as `aws` and `gh` are already authenticated. Agents should pause work
-and ask for a user login when credentials are missing or expired. Edit the
-dotfiles source to update guidance for new Codex sessions in any repository;
-an existing `~/.codex/AGENTS.override.md` takes precedence, and a custom
-`CODEX_HOME` needs its own link.
+Codex, Claude Code, DeepSeek Harness, and OpenCode instructions all link
+directly to `~/src/dotfiles/home/config/ai/AGENTS.md`. It describes the host
+tools, configuration ownership, and service CLI authentication expectations.
+Edit that source to update guidance for new sessions. An existing
+`~/.codex/AGENTS.override.md` takes precedence for Codex; a custom `CODEX_HOME`
+needs its own link.
 
 Home modules install or configure:
 
@@ -138,27 +132,14 @@ Home modules install or configure:
   dotfiles-owned zsh startup files
 - Konsole terminal configuration
 - Slack, qBittorrent, Firefox, Krita, Jellyfin Desktop, Vesktop, and mpv
-- utility packages including `ffmpeg-full`, `btop`, `gh`, `htop`, and
-  `fastfetch`
-- Codex CLI, Bubblewrap, Socat for Claude Code sandboxing, and the Dev Containers CLI
-- VS Code and Zed through Home Manager with mutable in-editor
-  settings and extensions
-- Nix tooling: Alejandra, deadnix, nix-output-monitor, nix-tree, nixd, nvd, and
-  statix
+- desktop applications including Firefox, Krita, Blender, Godot, and LibreOffice
+- VS Code through Home Manager with mutable settings and extensions
 
-Language runtimes, project language servers, formatters, linters, and build
-tools are intentionally kept out of the global Home profile. Use per-project
-flakes or this flake's opt-in development shells instead:
-
-```sh
-nix develop .#go
-nix develop .#k8s
-nix develop .#python
-nix develop .#rust
-nix develop .#typst
-nix develop .#web
-nix develop .#full
-```
+The system profile installs common development tools globally, including Git,
+Make, Node.js, Python, Go, Rust, Docker, Dev Containers, and Nix tooling. It also
+installs Codex, Claude Code, DeepSeek Harness, and OpenCode. Use a project's own
+flake or Dev Container when the project defines one; use `nix shell` for a
+one-off missing package.
 
 For VS Code editor integration, prefer the official Dev Containers workflow.
 Each project should own a `.devcontainer/devcontainer.json` that installs or
@@ -168,22 +149,8 @@ are available to the editor without installing them globally on the host.
 
 A project should install editor-facing tools directly into its container image
 or container profile so they are on the container `PATH` when the VS Code server
-starts. Running `nix develop` manually inside an integrated terminal is still
-useful for ad hoc commands, but it does not by itself make language servers
-available to the VS Code extension host.
-
-For terminal-only use inside or outside a container, enter a flake shell:
-
-```sh
-nix develop
-```
-
-This flake's shared shells remain useful for ad hoc local terminals and as
-building blocks for project containers:
-
-```sh
-nix develop /home/tomalaci/src/nixos#web
-```
+starts. Entering a project flake's shell in an integrated terminal does not by
+itself make language servers available to the VS Code extension host.
 
 ## Commands
 
