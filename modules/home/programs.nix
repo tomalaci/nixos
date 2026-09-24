@@ -12,7 +12,6 @@
     firefox
     jellyfin-media-player
     krita
-    inkscape
     qbittorrent
     slack
     vesktop
