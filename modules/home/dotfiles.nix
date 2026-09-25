@@ -17,7 +17,6 @@ in {
     ".dsh/cordis.patch.yml".source = dotfile "config/dsh/cordis.patch.yml";
     ".dsh/headless.patch.yml".source = dotfile "config/dsh/headless.patch.yml";
     ".config/mpv".source = dotfile "config/mpv";
-    ".config/codebook".source = dotfile "config/codebook";
     ".config/plasma-localerc".source = dotfile "config/plasma/plasma-localerc";
     ".config/kde-pinned-apps.conf".source = dotfile "config/plasma/kde-pinned-apps.conf";
     ".config/autostart/kde-fix-pinned-apps.desktop".source = dotfile "config/plasma/kde-fix-pinned-apps.desktop";
