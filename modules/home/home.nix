@@ -18,7 +18,7 @@
   programs.git = {
     enable = true;
     # Playwright MCP writes page snapshots and console logs to the working directory.
-    ignores = [".playwright-mcp/" ".venv" ".codex" ".claude" ".agents"];
+    ignores = [".playwright-mcp/" ".venv" "node_modules"];
     settings = {
       init.defaultBranch = "main";
       pull.rebase = true;
