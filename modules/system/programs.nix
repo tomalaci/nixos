@@ -91,6 +91,10 @@
       binutils
       perl
 
+      # Playwright MCP with Nix-provided browsers; @playwright/mcp from npx
+      # expects Chrome at /opt/google/chrome, which NixOS does not have.
+      playwright-mcp
+
       # Nix tooling
       alejandra
       deadnix
