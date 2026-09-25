@@ -36,6 +36,9 @@
     XDG_STATE_HOME = lib.mkDefault config.xdg.stateHome;
   };
 
+  # Dotfiles wrappers linked into ~/.local/bin (context7-mcp, codex-run, ...).
+  home.sessionPath = ["${config.home.homeDirectory}/.local/bin"];
+
   # Home submodules
   imports = [
     ./dotfiles.nix
