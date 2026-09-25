@@ -87,6 +87,7 @@
       nodejs_26
       python3
       go
+      gcc
       rustc
       binutils
       perl
@@ -171,4 +172,10 @@
       claude-code
       dsh
     ]);
+
+  # Shared Codex config as the system layer (/etc/codex/config.toml), linked out
+  # of store so edits in ai-config apply without a rebuild. The user layer,
+  # ~/.codex/config.toml, is a per-device file (see modules/home/ai-config.nix)
+  # where Codex writes project trust entries.
+  environment.etc."codex/config.toml".source = "${config.users.users.tomalaci.home}/src/ai-config/codex/config.toml";
 }
