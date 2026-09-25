@@ -113,18 +113,19 @@ Home Manager configures XDG base directories, session variables, user
 `tomalaci`, home directory `/home/tomalaci`, and state version `26.05`.
 
 Application configuration is intentionally kept out of this repo and linked
-from `${HOME}/src/dotfiles/home` with out-of-store symlinks. Current links cover
-VS Code settings, zsh startup files, Codex config and rules, Claude Code
-settings and subagents, DeepSeek Harness settings, mpv config, and the
-`~/.local/bin/context7-mcp`, `codex-run`, and `deepseek-run` wrappers.
+with out-of-store symlinks:
 
-Claude Code is the hub for multi-model work: its `architect` subagent delegates
-design and documentation to Codex through `codex-run`, and its `grunt` subagent
-delegates mechanical work to DeepSeek through `deepseek-run`. Both wrappers keep
-each tool on its own login or API key.
+- `modules/home/dotfiles.nix` links from `${HOME}/src/dotfiles/home`: VS Code
+  settings, zsh startup files, Starship, mpv, Plasma and Dolphin files, and
+  scripts in `~/.local/bin`.
+- `modules/home/ai-config.nix` links from `${HOME}/src/ai-config`: Claude Code
+  settings and subagents, Codex config and rules, DeepSeek Harness settings,
+  and the shared agent instructions. It also puts `~/src/ai-config/bin` (the
+  `ai-context7-mcp`, `ai-codex-run`, and `ai-deepseek-run` wrappers) on `PATH`.
+  See that repo's README for the multi-model delegation setup.
 
 Codex, Claude Code, and DeepSeek Harness instructions all link
-directly to `~/src/dotfiles/home/config/ai/AGENTS.md`. It describes the host
+directly to `~/src/ai-config/common/AGENTS.md`. It describes the host
 tools, configuration ownership, and service CLI authentication expectations.
 Edit that source to update guidance for new sessions. An existing
 `~/.codex/AGENTS.override.md` takes precedence for Codex; a custom `CODEX_HOME`

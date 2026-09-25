@@ -38,12 +38,13 @@
     XDG_STATE_HOME = lib.mkDefault config.xdg.stateHome;
   };
 
-  # Dotfiles wrappers linked into ~/.local/bin (context7-mcp, codex-run, ...).
+  # Dotfiles scripts linked into ~/.local/bin; ai-config.nix adds its own bin/.
   home.sessionPath = ["${config.home.homeDirectory}/.local/bin"];
 
   # Home submodules
   imports = [
     ./dotfiles.nix
+    ./ai-config.nix
     ./shell.nix
     ./programs.nix
   ];
