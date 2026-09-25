@@ -115,10 +115,15 @@ Home Manager configures XDG base directories, session variables, user
 Application configuration is intentionally kept out of this repo and linked
 from `${HOME}/src/dotfiles/home` with out-of-store symlinks. Current links cover
 VS Code settings, zsh startup files, Codex config and rules, Claude Code
-settings, DeepSeek Harness settings, OpenCode settings, mpv config, and
-`~/.local/bin/context7-mcp`.
+settings and subagents, DeepSeek Harness settings, mpv config, and the
+`~/.local/bin/context7-mcp`, `codex-run`, and `deepseek-run` wrappers.
 
-Codex, Claude Code, DeepSeek Harness, and OpenCode instructions all link
+Claude Code is the hub for multi-model work: its `architect` subagent delegates
+design and documentation to Codex through `codex-run`, and its `grunt` subagent
+delegates mechanical work to DeepSeek through `deepseek-run`. Both wrappers keep
+each tool on its own login or API key.
+
+Codex, Claude Code, and DeepSeek Harness instructions all link
 directly to `~/src/dotfiles/home/config/ai/AGENTS.md`. It describes the host
 tools, configuration ownership, and service CLI authentication expectations.
 Edit that source to update guidance for new sessions. An existing
@@ -137,7 +142,7 @@ Home modules install or configure:
 
 The system profile installs common development tools globally, including Git,
 Make, Node.js, Python, Go, Rust, Docker, Dev Containers, and Nix tooling. It also
-installs Codex, Claude Code, DeepSeek Harness, and OpenCode. Use a project's own
+installs Codex, Claude Code, and DeepSeek Harness. Use a project's own
 flake or Dev Container when the project defines one; use `nix shell` for a
 one-off missing package.
 

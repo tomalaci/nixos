@@ -12,8 +12,10 @@ in {
     ".codex/rules/default.rules".source = dotfile "config/codex/rules/default.rules";
     ".claude/CLAUDE.md".source = dotfile "config/ai/AGENTS.md";
     ".claude/settings.json".source = dotfile "config/claude/settings.json";
+    ".claude/agents".source = dotfile "config/claude/agents";
     ".dsh/AGENTS.md".source = dotfile "config/ai/AGENTS.md";
     ".dsh/cordis.patch.yml".source = dotfile "config/dsh/cordis.patch.yml";
+    ".dsh/headless.patch.yml".source = dotfile "config/dsh/headless.patch.yml";
     ".config/mpv".source = dotfile "config/mpv";
     ".config/codebook".source = dotfile "config/codebook";
     ".config/plasma-localerc".source = dotfile "config/plasma/plasma-localerc";
@@ -22,6 +24,8 @@ in {
     ".local/share/kio/servicemenus/flatten-folders.desktop".source = dotfile "config/dolphin/flatten-folders.desktop";
     ".zshenv".source = dotfile "zsh/.zshenv";
     ".local/bin/context7-mcp".source = dotfile "local/bin/context7-mcp";
+    ".local/bin/codex-run".source = dotfile "local/bin/codex-run";
+    ".local/bin/deepseek-run".source = dotfile "local/bin/deepseek-run";
     ".local/bin/dolphin-flatten-folders".source = dotfile "local/bin/dolphin-flatten-folders";
     ".local/bin/kde-fix-pinned-apps".source = dotfile "local/bin/kde-fix-pinned-apps";
   };
