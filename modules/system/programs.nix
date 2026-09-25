@@ -166,7 +166,5 @@
       codex
       claude-code
       dsh
-      opencode
-      opencode-desktop
     ]);
 }
