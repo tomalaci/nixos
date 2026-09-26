@@ -110,6 +110,8 @@
       # Playwright MCP with Nix-provided browsers; @playwright/mcp from npx
       # expects Chrome at /opt/google/chrome, which NixOS does not have.
       playwright-mcp
+      # Context7 docs MCP server, launched by ai-config's ai-context7-mcp with its key.
+      context7-mcp
 
       # Nix tooling
       alejandra
