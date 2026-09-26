@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Fast repository check, run by the Claude Stop hook after edits (see
+# ~/src/ai-config/claude/hooks/check.zsh). Full validation is still the
+# toplevel build described in README.md.
+set -euo pipefail
+cd "${0:A:h}/.."
+
+alejandra -q -c .
+git diff --check

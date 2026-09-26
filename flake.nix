@@ -61,7 +61,6 @@
 
     system = "x86_64-linux";
     pkgs = mkPkgs system;
-
   in {
     overlays.default = import ./modules/overlays/default.nix;
 
