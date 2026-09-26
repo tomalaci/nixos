@@ -7,24 +7,39 @@
 ~/src/ai-config/claude/hooks/check.py). Full validation is still the toplevel
 build described in README.md."""
 
+import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+PYTHON = [
+    ".ai/check",
+    *sorted(str(p.relative_to(ROOT)) for p in ROOT.glob("scripts/*.py")),
+]
 CHECKS = [
     ["alejandra", "-q", "-c", "."],
     ["git", "diff", "--check"],
 ]
+if shutil.which("ruff"):
+    CHECKS += [
+        ["ruff", "check", "--quiet", *PYTHON],
+        ["ruff", "format", "--check", "--quiet", *PYTHON],
+    ]
 
 
 def main() -> None:
     failed = False
     for command in CHECKS:
-        result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True)
+        result = subprocess.run(
+            command, cwd=ROOT, capture_output=True, text=True, check=False
+        )
         if result.returncode != 0:
             failed = True
-            print(f"$ {' '.join(command)}\n{(result.stdout + result.stderr).strip()}", file=sys.stderr)
+            print(
+                f"$ {' '.join(command)}\n{(result.stdout + result.stderr).strip()}",
+                file=sys.stderr,
+            )
     sys.exit(1 if failed else 0)
 
 

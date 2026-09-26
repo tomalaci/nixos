@@ -31,6 +31,13 @@ a link.
   boot or login; package tools with Nix instead.
 - Keep changes scoped to the request, preserve unrelated edits, and do not
   revert user changes unless asked.
+- Scheduled jobs live in `modules/home/scheduled-jobs.nix` (systemd user
+  timers) with their scripts in `scripts/` as uv Python scripts. Jobs run at
+  idle priority, cap builds with `--max-jobs 1 --cores 6`, report to
+  `~/.local/state/ai-jobs/<job>/`, and never switch, merge, or push. A job that
+  downloads or builds must not catch up at login (`Persistent = false`).
+- `flake-update-<date>` branches and their `.worktrees/` are created by the
+  daily flake job; leave them to it unless the user asks.
 
 ## Validation
 

@@ -83,6 +83,8 @@
       gnumake
       bubblewrap
       socat
+      # notify-send, for desktop notifications from scheduled jobs
+      libnotify
       devcontainer
       nodejs_26
       python3

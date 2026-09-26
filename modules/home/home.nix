@@ -47,5 +47,6 @@
     ./ai-config.nix
     ./shell.nix
     ./programs.nix
+    ./scheduled-jobs.nix
   ];
 }

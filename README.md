@@ -62,6 +62,8 @@ live under `/mnt/sata-a`, `/mnt/sata-b`, and `/mnt/sata-c`.
 ```text
 .
 ├── .ai/check          # fast repository check (run by agents after edits)
+├── scripts/
+│   └── flake-update-check.py  # daily flake update job (see Scheduled jobs)
 ├── AGENTS.md          # instructions for AI agents working in this repository
 ├── README.md
 ├── flake.lock
@@ -72,6 +74,7 @@ live under `/mnt/sata-a`, `/mnt/sata-b`, and `/mnt/sata-c`.
     │   ├── dotfiles.nix
     │   ├── home.nix
     │   ├── programs.nix
+    │   ├── scheduled-jobs.nix
     │   └── shell.nix
     ├── hosts/
     │   └── desktop.nix
@@ -184,6 +187,24 @@ A project should install editor-facing tools directly into its container image
 or container profile so they are on the container `PATH` when the VS Code server
 starts. Entering a project flake's shell in an integrated terminal does not by
 itself make language servers available to the VS Code extension host.
+
+## Scheduled jobs
+
+`modules/home/scheduled-jobs.nix` defines systemd user timers. They run in the
+background with no window, at idle CPU and IO priority, and write a report to
+`~/.local/state/ai-jobs/<job>/<date>.md` (plus `latest.md`) with one desktop
+notification.
+
+| Job | When | Missed runs | What it does |
+|---|---|---|---|
+| `flake-update-check` | daily 11:00 | skipped (next day) | `scripts/flake-update-check.py`: in a worktree, `nix flake update`, build with at most 6 cores (`--max-jobs 1 --cores 6`), `nvd diff` against the running system, commit `flake.lock` on a local `flake-update-<date>` branch, and a Claude summary with a verdict. Never switches, merges, or pushes. |
+| `ai-stats-report` | Sundays 11:00 | caught up at next login | `ai-stats report`: agent statistics for the last 7 and 30 days |
+
+Apply a flake update from its report: `git cherry-pick flake-update-<date>` in
+this repository (the branch holds one `flake.lock` commit), then switch. Earlier job branches are removed automatically
+unless they contain other commits. Inspect timers with
+`systemctl --user list-timers` and logs with
+`journalctl --user -u flake-update-check`.
 
 ## Commands
 
