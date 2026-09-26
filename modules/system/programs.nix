@@ -92,6 +92,19 @@
       cargo
       binutils
       perl
+      uv
+
+      # Tools AI agents reach for: structural search/rewrite, shell linting and
+      # formatting, archives, and port/API debugging.
+      ast-grep
+      shellcheck
+      shfmt
+      tree
+      zip
+      unzip
+      lsof
+      grpcurl
+      websocat
 
       # Playwright MCP with Nix-provided browsers; @playwright/mcp from npx
       # expects Chrome at /opt/google/chrome, which NixOS does not have.
