@@ -119,8 +119,10 @@ with out-of-store symlinks:
   settings, zsh startup files, Starship, mpv, Plasma and Dolphin files, and
   scripts in `~/.local/bin`.
 - `modules/home/ai-config.nix` links from `${HOME}/src/ai-config`: Claude Code
-  settings and subagents, Codex config and rules, DeepSeek Harness settings,
-  and the shared agent instructions. It also puts `~/src/ai-config/bin` (the
+  settings and subagents, the per-device Codex user config
+  (`codex/config.local.toml`, gitignored) and rules, DeepSeek Harness settings,
+  and the shared agent instructions. The shared Codex config is linked as the
+  system layer `/etc/codex/config.toml` by `modules/system/programs.nix`. It also puts `~/src/ai-config/bin` (the
   `ai-context7-mcp`, `ai-codex-run`, and `ai-deepseek-run` wrappers) on `PATH`.
   See that repo's README for the multi-model delegation setup.
 
@@ -169,7 +171,9 @@ nix build .#nixosConfigurations.desktop.config.system.build.toplevel --no-link
 nix build .#homeConfigurations.tomalaci.activationPackage --no-link
 ```
 
-Runtime switch commands:
+Runtime switch commands. Home Manager also runs as a NixOS module, so the
+system switch applies home changes too; use the standalone Home Manager switch
+only for home-only changes:
 
 ```sh
 sudo nixos-rebuild switch --flake /home/tomalaci/src/nixos#desktop
@@ -187,7 +191,7 @@ nh home switch -c tomalaci
 ## Working Notes
 
 - Use `rg` or `rg --files` for searches.
-- Use `apply_patch` for manual edits.
+- Use the agent's native file-editing tool for manual edits (`apply_patch` in Codex).
 - Keep changes scoped to the requested area.
 - Do not revert user changes unless explicitly asked.
 - Stage changed files when a ready-to-commit change set is being accumulated.

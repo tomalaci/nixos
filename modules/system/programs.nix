@@ -89,6 +89,7 @@
       go
       gcc
       rustc
+      cargo
       binutils
       perl
 
