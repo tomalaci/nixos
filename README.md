@@ -71,10 +71,10 @@ live under `/mnt/sata-a`, `/mnt/sata-b`, and `/mnt/sata-c`.
 └── modules/
     ├── home/
     │   ├── ai-config.nix
+    │   ├── claude-presence.nix
     │   ├── dotfiles.nix
     │   ├── home.nix
     │   ├── programs.nix
-    │   ├── remote-agents.nix
     │   ├── scheduled-jobs.nix
     │   └── shell.nix
     ├── hosts/
@@ -210,28 +210,13 @@ unless they contain other commits. Inspect timers with
 
 ## Remote agent access
 
-`modules/home/remote-agents.nix` makes agents usable from a phone or browser
-while this PC is on:
-
-- `claude-remote` runs `claude remote-control` (Remote Control server mode) in
-  `~/src`, inside a private tmux server, and restarts it when it exits. Start
-  new sessions or answer prompts from claude.ai/code or the Claude app; they run
-  here with local repos and tools. See the server with
-  `tmux -L claude-remote attach` (detach with `C-b d`). Clients attach
-  read-only, because a writable attach makes `claude remote-control` quit;
-  show the QR code with `tmux -L claude-remote send-keys -t remote Space`. The
-  last screen before an exit is kept in
-  `~/.local/state/claude-remote/last-exit.txt`; unit logs are in
-  `journalctl --user -u claude-remote`.
-- `claude-presence` runs `ai-presence`, which keeps
-  `$XDG_RUNTIME_DIR/claude-present` in step with the screen lock. Claude Code
-  skips mobile push notifications while that file exists
-  (`CLAUDE_CLIENT_PRESENCE_FILE`), so they arrive only while the screen is locked.
-- `tmux` is installed for SSH over Tailscale, for tools Remote Control does not
-  cover (Codex, `dsh`, `/resume`).
-
-Remote sessions have the same host access as a terminal session; long
-unattended work goes through `ai-sandbox` (see `~/src/ai-config`).
+Start `claude remote-control` (or `/remote-control` in a session) by hand to
+drive sessions on this PC from claude.ai/code or the Claude app.
+`modules/home/claude-presence.nix` runs `claude-presence` (`ai-presence`), which
+keeps `$XDG_RUNTIME_DIR/claude-present` in step with the screen lock; Claude
+Code skips mobile push notifications while that file exists
+(`CLAUDE_CLIENT_PRESENCE_FILE`), so they arrive only while the screen is locked.
+`tmux` is installed for SSH over Tailscale.
 
 ## Commands
 

@@ -48,6 +48,6 @@
     ./shell.nix
     ./programs.nix
     ./scheduled-jobs.nix
-    ./remote-agents.nix
+    ./claude-presence.nix
   ];
 }

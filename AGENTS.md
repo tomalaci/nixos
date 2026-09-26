@@ -36,10 +36,6 @@ a link.
   idle priority, cap builds with `--max-jobs 1 --cores 6`, report to
   `~/.local/state/ai-jobs/<job>/`, and never switch, merge, or push. A job that
   downloads or builds must not catch up at login (`Persistent = false`).
-- `modules/home/remote-agents.nix` runs the Claude Remote Control server
-  (`claude-remote`, in tmux) and the screen-lock presence marker
-  (`claude-presence`). Do not restart `claude-remote` from inside a session it
-  serves: that ends the session.
 - `flake-update-<date>` branches and their `.worktrees/` are created by the
   daily flake job; leave them to it unless the user asks.
 

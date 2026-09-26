@@ -111,7 +111,7 @@
       grpcurl
       websocat
 
-      # Keeps agent sessions alive across disconnects (SSH over Tailscale, claude-remote).
+      # Keeps sessions alive across disconnects (SSH over Tailscale).
       tmux
 
       # Playwright MCP with Nix-provided browsers; @playwright/mcp from npx
