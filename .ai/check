@@ -1,9 +1,32 @@
-#!/usr/bin/env zsh
-# Fast repository check, run by the Claude Stop hook after edits (see
-# ~/src/ai-config/claude/hooks/check.zsh). Full validation is still the
-# toplevel build described in README.md.
-set -euo pipefail
-cd "${0:A:h}/.."
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = []
+# ///
+"""Fast repository check, run by the Claude Stop hook after edits (see
+~/src/ai-config/claude/hooks/check.py). Full validation is still the toplevel
+build described in README.md."""
 
-alejandra -q -c .
-git diff --check
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+CHECKS = [
+    ["alejandra", "-q", "-c", "."],
+    ["git", "diff", "--check"],
+]
+
+
+def main() -> None:
+    failed = False
+    for command in CHECKS:
+        result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True)
+        if result.returncode != 0:
+            failed = True
+            print(f"$ {' '.join(command)}\n{(result.stdout + result.stderr).strip()}", file=sys.stderr)
+    sys.exit(1 if failed else 0)
+
+
+if __name__ == "__main__":
+    main()
