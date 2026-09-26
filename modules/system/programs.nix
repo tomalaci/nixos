@@ -93,6 +93,7 @@
       binutils
       perl
       uv
+      ruff
 
       # Tools AI agents reach for: structural search/rewrite, shell linting and
       # formatting, archives, and port/API debugging.
