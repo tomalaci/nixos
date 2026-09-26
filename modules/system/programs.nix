@@ -82,6 +82,8 @@
       git
       gnumake
       bubblewrap
+      # pasta: private user-mode networking for ai-sandbox (hides host loopback)
+      passt
       socat
       # notify-send, for desktop notifications from scheduled jobs
       libnotify
