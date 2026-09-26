@@ -1,7 +1,8 @@
 # Scheduled AI and maintenance jobs as systemd user timers. They run in the
 # background with no window; results go to ~/.local/state/ai-jobs/<job>/ with a
 # single desktop notification. Nothing here runs during boot or login except
-# the weekly ai-stats report, which is local-only and catches up when missed.
+# the weekly ai-health check and ai-stats report, which catch up when missed:
+# both are light and download nothing.
 {config, ...}: let
   home = config.home.homeDirectory;
   # Keep background jobs from competing with interactive work.
@@ -24,6 +25,16 @@ in {
             TimeoutStartSec = "5h";
           };
       };
+      ai-health = {
+        Unit.Description = "Weekly agent health check (notifies only on failure)";
+        Service =
+          lowPriority
+          // {
+            Type = "oneshot";
+            ExecStart = "${home}/src/ai-config/bin/ai-health --notify";
+            TimeoutStartSec = "20m";
+          };
+      };
       ai-stats-report = {
         Unit.Description = "Weekly agent statistics report";
         Service =
@@ -43,6 +54,15 @@ in {
         Timer = {
           OnCalendar = "*-*-* 11:00:00";
           Persistent = false;
+        };
+        Install.WantedBy = ["timers.target"];
+      };
+      ai-health = {
+        Unit.Description = "Weekly agent health check on Sundays at 10:50";
+        # Missed runs catch up at the next login: a few small API calls, no downloads.
+        Timer = {
+          OnCalendar = "Sun *-*-* 10:50:00";
+          Persistent = true;
         };
         Install.WantedBy = ["timers.target"];
       };

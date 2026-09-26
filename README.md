@@ -198,6 +198,7 @@ notification.
 | Job | When | Missed runs | What it does |
 |---|---|---|---|
 | `flake-update-check` | daily 11:00 | skipped (next day) | `scripts/flake-update-check.py`: in a worktree, `nix flake update`, build with at most 6 cores (`--max-jobs 1 --cores 6`), `nvd diff` against the running system, commit `flake.lock` on a local `flake-update-<date>` branch, and a Claude summary with a verdict. Never switches, merges, or pushes. |
+| `ai-health` | Sundays 10:50 | caught up at next login | `ai-health --notify`: smoke-tests the Codex, DeepSeek, and Claude CLIs and both MCP servers; notifies only on failure |
 | `ai-stats-report` | Sundays 11:00 | caught up at next login | `ai-stats report`: agent statistics for the last 7 and 30 days |
 
 Apply a flake update from its report: `git cherry-pick flake-update-<date>` in
