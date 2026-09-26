@@ -2,6 +2,22 @@
 
 Personal NixOS configuration flake for Tomalaci's hosts.
 
+## Where this host is managed
+
+This workstation is managed from three repositories under `~/src/`, all with a
+direct-to-`main` workflow:
+
+| Repository | Owns |
+|---|---|
+| `~/src/nixos` (this repository) | NixOS and Home Manager: hardware, boot, services, installed packages, and the links that put the other two repositories' files into place |
+| `~/src/dotfiles` | Mutable application and shell configuration under `home/`: zsh, Starship, VS Code, mpv, Plasma, Dolphin, and `~/.local/bin` scripts |
+| `~/src/ai-config` | AI agent configuration (Claude Code, Codex, DeepSeek Harness): shared agent guidance, subagents, skills, hooks, and the `ai-*` commands |
+
+Files from `dotfiles` and `ai-config` are linked with out-of-store symlinks, so
+editing them takes effect immediately. New packages, new or moved links, and
+system settings take effect after `sudo nixos-rebuild switch --flake
+/home/tomalaci/src/nixos#desktop`.
+
 ## Overview
 
 This flake defines:
@@ -45,11 +61,14 @@ live under `/mnt/sata-a`, `/mnt/sata-b`, and `/mnt/sata-c`.
 
 ```text
 .
+├── .ai/check          # fast repository check (run by agents after edits)
+├── AGENTS.md          # instructions for AI agents working in this repository
 ├── README.md
 ├── flake.lock
 ├── flake.nix
 └── modules/
     ├── home/
+    │   ├── ai-config.nix
     │   ├── dotfiles.nix
     │   ├── home.nix
     │   ├── programs.nix
@@ -79,7 +98,7 @@ Important entry points:
 - `modules/system/system.nix` contains shared NixOS basics and imports
   boot, fonts, gaming, KDE, locale, programs, services, and user modules.
 - `modules/home/home.nix` contains shared Home Manager basics and imports
-  dotfiles, shell, and programs modules.
+  the dotfiles, ai-config, shell, and programs modules.
 
 ## System Profile
 
@@ -119,12 +138,14 @@ with out-of-store symlinks:
   settings, zsh startup files, Starship, mpv, Plasma and Dolphin files, and
   scripts in `~/.local/bin`.
 - `modules/home/ai-config.nix` links from `${HOME}/src/ai-config`: Claude Code
-  settings and subagents, the per-device Codex user config
-  (`codex/config.local.toml`, gitignored) and rules, DeepSeek Harness settings,
-  and the shared agent instructions. The shared Codex config is linked as the
-  system layer `/etc/codex/config.toml` by `modules/system/programs.nix`. It also puts `~/src/ai-config/bin` (the
-  `ai-context7-mcp`, `ai-codex-run`, and `ai-deepseek-run` wrappers) on `PATH`.
-  See that repo's README for the multi-model delegation setup.
+  settings, subagents, and skills (one link per skill, because
+  `~/.claude/skills` also holds skills synced from claude.ai), the per-device
+  Codex user config (`codex/config.local.toml`, gitignored) and rules, DeepSeek
+  Harness settings, and the shared agent instructions. It also puts
+  `~/src/ai-config/bin` (`ai-codex-run`, `ai-deepseek-run`, `ai-worktree`, and
+  `ai-context7-mcp`) on `PATH`. The shared Codex config is linked as the system
+  layer `/etc/codex/config.toml` by `modules/system/programs.nix`. See that
+  repository's README for the multi-model delegation setup.
 
 Codex, Claude Code, and DeepSeek Harness instructions all link
 directly to `~/src/ai-config/common/AGENTS.md`. It describes the host
@@ -139,15 +160,19 @@ Home modules install or configure:
 - zsh support packages, Starship, zoxide, and mutable
   dotfiles-owned zsh startup files
 - Konsole terminal configuration
-- Slack, qBittorrent, Firefox, Krita, Jellyfin Desktop, Vesktop, and mpv
-- desktop applications including Firefox, Krita, Blender, Godot, and LibreOffice
+- desktop applications: Firefox, Slack, Vesktop, qBittorrent, Jellyfin Media
+  Player, Krita, Upscayl, Blender, Godot, LibreOffice, KCalc, and KDialog
 - VS Code through Home Manager with mutable settings and extensions
 
-The system profile installs common development tools globally, including Git,
-Make, Node.js, Python, Go, Rust, Docker, Dev Containers, and Nix tooling. It also
-installs Codex, Claude Code, and DeepSeek Harness. Use a project's own
-flake or Dev Container when the project defines one; use `nix shell` for a
-one-off missing package.
+The system profile installs common development tools globally: Git, Make, GCC,
+Node.js, Python with uv and Ruff, Go, Rust with Cargo, OpenTofu, Docker, Dev
+Containers, Nix tooling, code-search and shell tools (`ast-grep`, `shellcheck`,
+`shfmt`), and network debugging tools (`grpcurl`, `websocat`, `lsof`). It also
+installs Codex, Claude Code, DeepSeek Harness, and the Playwright and Context7
+MCP servers; mpv is a system package. The full inventory that agents rely on is
+in `~/src/ai-config/common/AGENTS.md`. Use a project's own flake or Dev
+Container when the project defines one; use `nix shell` for a one-off missing
+package.
 
 For VS Code editor integration, prefer the official Dev Containers workflow.
 Each project should own a `.devcontainer/devcontainer.json` that installs or
@@ -165,6 +190,7 @@ itself make language servers available to the VS Code extension host.
 Prefer build and evaluation checks before switching the live machine.
 
 ```sh
+.ai/check
 nix fmt
 nix flake check
 nix build .#nixosConfigurations.desktop.config.system.build.toplevel --no-link
@@ -188,16 +214,7 @@ nh os switch -H desktop
 nh home switch -c tomalaci
 ```
 
-## Working Notes
+## Working with agents
 
-- Use `rg` or `rg --files` for searches.
-- Use the agent's native file-editing tool for manual edits (`apply_patch` in Codex).
-- Keep changes scoped to the requested area.
-- Do not revert user changes unless explicitly asked.
-- Stage changed files when a ready-to-commit change set is being accumulated.
-- For system-level changes, verify with the NixOS toplevel build when possible.
-- For home-only changes, verify with the Home Manager activation package when
-  possible.
-- For formatting-only or broad Nix edits, run `nix fmt` when possible.
-- Do not run `sudo nixos-rebuild switch` or `home-manager switch` unless the
-  user explicitly asks to apply the configuration.
+AI agents follow [AGENTS.md](AGENTS.md) in this repository, on top of the shared
+workstation guidance in `~/src/ai-config/common/AGENTS.md`.
