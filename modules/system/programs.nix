@@ -161,7 +161,7 @@
       hcloud
       cloudflared
       gdrive
-      terraform
+      opentofu
       kubectl
       k9s
       megasync
