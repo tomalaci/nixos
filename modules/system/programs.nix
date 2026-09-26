@@ -111,6 +111,9 @@
       grpcurl
       websocat
 
+      # Keeps agent sessions alive across disconnects (SSH over Tailscale, claude-remote).
+      tmux
+
       # Playwright MCP with Nix-provided browsers; @playwright/mcp from npx
       # expects Chrome at /opt/google/chrome, which NixOS does not have.
       playwright-mcp

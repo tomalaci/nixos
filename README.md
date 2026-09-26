@@ -74,6 +74,7 @@ live under `/mnt/sata-a`, `/mnt/sata-b`, and `/mnt/sata-c`.
     │   ├── dotfiles.nix
     │   ├── home.nix
     │   ├── programs.nix
+    │   ├── remote-agents.nix
     │   ├── scheduled-jobs.nix
     │   └── shell.nix
     ├── hosts/
@@ -206,6 +207,27 @@ this repository (the branch holds one `flake.lock` commit), then switch. Earlier
 unless they contain other commits. Inspect timers with
 `systemctl --user list-timers` and logs with
 `journalctl --user -u flake-update-check`.
+
+## Remote agent access
+
+`modules/home/remote-agents.nix` makes agents usable from a phone or browser
+while this PC is on:
+
+- `claude-remote` runs `claude remote-control` (Remote Control server mode) in
+  `~/src`, inside a private tmux server, and restarts it when it exits. Start
+  new sessions or answer prompts from claude.ai/code or the Claude app; they run
+  here with local repos and tools. See the server with
+  `tmux -L claude-remote attach` (detach with `C-b d`), logs with
+  `journalctl --user -u claude-remote`.
+- `claude-presence` runs `ai-presence`, which keeps
+  `$XDG_RUNTIME_DIR/claude-present` in step with the screen lock. Claude Code
+  skips mobile push notifications while that file exists
+  (`CLAUDE_CLIENT_PRESENCE_FILE`), so they arrive only while the screen is locked.
+- `tmux` is installed for SSH over Tailscale, for tools Remote Control does not
+  cover (Codex, `dsh`, `/resume`).
+
+Remote sessions have the same host access as a terminal session; long
+unattended work goes through `ai-sandbox` (see `~/src/ai-config`).
 
 ## Commands
 
