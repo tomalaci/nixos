@@ -13,7 +13,8 @@ in {
     ".config/autostart/kde-fix-pinned-apps.desktop".source = dotfile "config/plasma/kde-fix-pinned-apps.desktop";
     ".local/share/kio/servicemenus/flatten-folders.desktop".source = dotfile "config/dolphin/flatten-folders.desktop";
     ".zshenv".source = dotfile "zsh/.zshenv";
-    ".local/bin/dolphin-flatten-folders".source = dotfile "local/bin/dolphin-flatten-folders";
-    ".local/bin/kde-fix-pinned-apps".source = dotfile "local/bin/kde-fix-pinned-apps";
   };
+
+  # ai-* scripts (bin/ holds symlinks into scripts/).
+  sessionPath = ["${dotfilesDir}/local/bin"];
 }
