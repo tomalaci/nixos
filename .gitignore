@@ -23,6 +23,7 @@ modules/secrets/*
 *.log
 *.cache
 *.bak
+.mcp.json
 
 # Temporary directories
 tmp/
