@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  lib,
   inputs,
   ...
 }: {
@@ -24,51 +25,53 @@
   # Nix global library linking
   programs.nix-ld = {
     enable = true;
-    libraries = with pkgs; [
-      alsa-lib
-      at-spi2-atk
-      at-spi2-core
-      cairo
-      cups
-      curl
-      dbus
-      expat
-      fontconfig
-      freetype
-      fuse3
-      glib
-      gtk3
-      icu
-      libdrm
-      libglvnd
-      libnotify
-      libpulseaudio
-      libxkbcommon
-      mesa
-      nspr
-      nss
-      openssl
-      pango
-      pipewire
-      stdenv.cc.cc
-      systemd
-      vulkan-loader
-      libx11
-      libxscrnsaver
-      libxcomposite
-      libxcursor
-      libxdamage
-      libxext
-      libxfixes
-      libxi
-      libxrandr
-      libxrender
-      libxtst
-      libxcb
-      libxshmfence
-      zlib
-      config.boot.kernelPackages.nvidia_x11
-    ];
+    libraries =
+      (with pkgs; [
+        alsa-lib
+        at-spi2-atk
+        at-spi2-core
+        cairo
+        cups
+        curl
+        dbus
+        expat
+        fontconfig
+        freetype
+        fuse3
+        glib
+        gtk3
+        icu
+        libdrm
+        libglvnd
+        libnotify
+        libpulseaudio
+        libxkbcommon
+        mesa
+        nspr
+        nss
+        openssl
+        pango
+        pipewire
+        stdenv.cc.cc
+        systemd
+        vulkan-loader
+        libx11
+        libxscrnsaver
+        libxcomposite
+        libxcursor
+        libxdamage
+        libxext
+        libxfixes
+        libxi
+        libxrandr
+        libxrender
+        libxtst
+        libxcb
+        libxshmfence
+        zlib
+      ])
+      ++ lib.optional (lib.elem "nvidia" config.services.xserver.videoDrivers)
+      config.boot.kernelPackages.nvidia_x11;
   };
 
   environment.systemPackages =
@@ -171,8 +174,6 @@
       pcsc-tools
       usbutils
       yubikey-manager
-      openrgb
-      rivalcfg
 
       # Archives and installers
       gzip

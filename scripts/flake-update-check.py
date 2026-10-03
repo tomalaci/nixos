@@ -8,8 +8,9 @@
 In a fresh worktree of this repository (never the main checkout):
 
 1. `nix flake update`; stop quietly when nothing changed.
-2. Build the desktop system with at most 6 cores (one build at a time), so
-   packages missing from the binary cache compile without taking over the PC.
+2. Build this host's system (NIX_HOST from ~/.nix-host) with at most 6 cores
+   (one build at a time), so packages missing from the binary cache compile
+   without taking over the PC.
 3. Diff against the running system with `nvd`.
 4. Commit the new flake.lock on a local `flake-update-<date>` branch.
 5. Ask Claude (no tools, read-only prompt) for a short summary and verdict.
@@ -24,6 +25,7 @@ cleaned up, and only when they contain nothing but this job's commit.
 import argparse
 import datetime
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -33,7 +35,7 @@ REPO = Path(__file__).resolve().parent.parent
 BRANCH_PREFIX = "flake-update-"
 COMMIT_PREFIX = "flake.lock: update"
 BUILD_LIMITS = ["--max-jobs", "1", "--cores", "6"]
-TOPLEVEL = "nixosConfigurations.desktop.config.system.build.toplevel"
+NIX_HOST_FILE = Path.home() / ".nix-host"
 STATE = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state"))
 REPORTS = STATE / "ai-jobs" / "flake-update"
 SUMMARY_PROMPT = """You are summarizing an automated NixOS flake update for the system's owner.
@@ -117,6 +119,18 @@ def claude_summary(context: str) -> str | None:
     return result.stdout.strip() if result.returncode == 0 else None
 
 
+def nix_host() -> str | None:
+    """NIX_HOST from the environment, else from ~/.nix-host (KEY=value lines)."""
+    if host := os.environ.get("NIX_HOST"):
+        return host
+    try:
+        text = NIX_HOST_FILE.read_text()
+    except OSError:
+        return None
+    match = re.search(r"^\s*(?:export\s+)?NIX_HOST=[\"']?([\w.-]+)", text, re.MULTILINE)
+    return match.group(1) if match else None
+
+
 def write_report(date: str, text: str) -> Path:
     REPORTS.mkdir(parents=True, exist_ok=True)
     report = REPORTS / f"{date}.md"
@@ -135,6 +149,15 @@ def main() -> None:
     args = parser.parse_args()
 
     date = datetime.datetime.now().astimezone().date().isoformat()
+    host = nix_host()
+    if not host:
+        report = write_report(
+            date,
+            f"# Flake update {date}\n\nNIX_HOST is not set in {NIX_HOST_FILE}.\n",
+        )
+        notify("Flake update failed", f"NIX_HOST is not set. See {report}")
+        sys.exit(1)
+    toplevel = f"nixosConfigurations.{host}.config.system.build.toplevel"
     branch = f"{BRANCH_PREFIX}{date}"
     kept = cleanup_previous(branch)
     if branch in job_branches():
@@ -187,7 +210,7 @@ def main() -> None:
         "--no-link",
         "--print-out-paths",
         *BUILD_LIMITS,
-        f".#{TOPLEVEL}",
+        f".#{toplevel}",
         cwd=worktree,
         timeout=4 * 3600,
     )
@@ -223,7 +246,7 @@ def main() -> None:
 
     apply_steps = (
         f"cd {REPO} && git cherry-pick {branch}\n"
-        f"sudo nixos-rebuild switch --flake {REPO}#desktop"
+        f"sudo nixos-rebuild switch --flake {REPO}#{host}"
     )
     kept_note = (
         f"\nKept earlier job branches with other changes: {', '.join(kept)}\n"
@@ -233,7 +256,7 @@ def main() -> None:
     report = write_report(
         date,
         f"# Flake update {date}\n\n"
-        f"Branch `{branch}` (worktree `{worktree}`), build {build_status}.\n\n"
+        f"Branch `{branch}` (worktree `{worktree}`), `{host}` build {build_status}.\n\n"
         + (f"## Summary\n\n{summary}\n\n" if summary else "")
         + (f"## Apply\n\n```sh\n{apply_steps}\n```\n\n" if built else "")
         + kept_note

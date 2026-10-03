@@ -15,7 +15,11 @@ in {
   systemd.user = {
     services = {
       flake-update-check = {
-        Unit.Description = "Daily flake update check: build, diff, and AI summary (no switch)";
+        Unit = {
+          Description = "Daily flake update check: build, diff, and AI summary (no switch)";
+          # Laptops skip the build on battery; true on machines without a battery.
+          ConditionACPower = true;
+        };
         Service =
           lowPriority
           // {

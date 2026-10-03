@@ -1,7 +1,10 @@
 # nixos repository
 
-NixOS and Home Manager configuration for Tomalaci's workstation (`azepc-main`,
-flake output `desktop`). The shared workstation guidance every agent loads is
+NixOS and Home Manager configuration for Tomalaci's machines: the desktop
+`azepc-main` and the laptops `azelap-x1g9`, `azelap-p16g5`, and `azelap-ga502`.
+Each `nixosConfigurations` output is named after its hostname and defined in
+`modules/hosts/<host>/`; the current machine's is `$NIX_HOST` (from
+`~/.nix-host`). The shared workstation guidance every agent loads is
 `~/src/ai-config/common/AGENTS.md`; this file only covers this repository.
 `README.md` describes the host, layout, and profiles.
 
@@ -24,6 +27,11 @@ a link.
   home-only switches.
 - Never run `sudo nixos-rebuild switch`, `nh os switch`, or `home-manager switch`
   yourself: build and validate, then tell the user the switch command.
+- Shared system settings go in `modules/system/`; hardware, storage, and the
+  choice of optional modules (gaming, laptop, peripherals, usenet) go in the
+  host's `modules/hosts/<host>/default.nix`. Laptop disks are declared with
+  disko (`modules/disko/laptop.nix`); never change a laptop's disko layout or
+  `local.disko.device` without the user, since it only applies on reinstall.
 - Install system-wide tools in `modules/system/programs.nix` and desktop
   applications in `modules/home/programs.nix`. Keep one package per line in the
   existing groups, with a comment when the reason is not obvious.
@@ -43,9 +51,11 @@ a link.
 
 - Run `.ai/check` (Alejandra formatting and `git diff --check`); the Claude Stop
   hook also runs it after edits.
-- System changes: `nix build --no-link /home/tomalaci/src/nixos#nixosConfigurations.desktop.config.system.build.toplevel`
+- System changes: `nix build --no-link /home/tomalaci/src/nixos#nixosConfigurations.$NIX_HOST.config.system.build.toplevel`,
+  and for changes to shared modules also evaluate the other hosts
+  (`nix eval --raw .#nixosConfigurations.<host>.config.system.build.toplevel.drvPath`).
 - Home-only changes: `nix build --no-link /home/tomalaci/src/nixos#homeConfigurations.tomalaci.activationPackage`
 - Broad Nix edits: `nix fmt`. `statix check` and `deadnix` on the files you
   changed; some older files still carry warnings.
 - The user applies changes with
-  `sudo nixos-rebuild switch --flake /home/tomalaci/src/nixos#desktop`.
+  `nh os switch` (or `sudo nixos-rebuild switch --flake /home/tomalaci/src/nixos#$NIX_HOST`).

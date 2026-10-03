@@ -30,9 +30,10 @@ in {
         claudeSkills);
 
     # Create the per-device Codex user layer on a fresh device, so the link above
-    # is not dangling. Codex adds project trust entries to it.
+    # is not dangling. Codex adds project trust entries to it. Skipped until
+    # ai-config is cloned on a newly installed host.
     activation.codexLocalConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      if [ ! -e "${aiConfigDir}/codex/config.local.toml" ]; then
+      if [ -d "${aiConfigDir}/codex" ] && [ ! -e "${aiConfigDir}/codex/config.local.toml" ]; then
         run touch "${aiConfigDir}/codex/config.local.toml"
       fi
     '';

@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{...}: {
   # Network management
   networking.networkmanager.enable = true;
   networking.firewall.enable = true;
@@ -23,14 +23,6 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # Usenet services.
-  services.nzbget = {
-    enable = true;
-    user = "tomalaci";
-    group = "users";
-  };
-  services.nzbhydra2.enable = true;
-
   # Smartcard access for YubiKeys.
   services.pcscd.enable = true;
 
@@ -48,17 +40,5 @@
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     #media-session.enable = true;
-  };
-
-  # Peripheral services
-  services.hardware.openrgb.enable = true;
-  services.udev.packages = [pkgs.rivalcfg];
-  services.udev.extraRules = ''
-    KERNEL=="hidraw*", ATTRS{idVendor}=="1038", MODE="0666"
-  ''; # Extra rules for steelseries devices
-  services.arctis-sound-manager.enable = true;
-  services.input-remapper = {
-    enable = true;
-    enableUdevRules = true;
   };
 }

@@ -7,6 +7,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
     llm-agents.url = "github:numtide/llm-agents.nix";
     arctis-sound-manager = {
       url = "github:loteran/Arctis-Sound-Manager?dir=nix";
@@ -18,10 +23,19 @@
     self,
     nixpkgs,
     home-manager,
-    arctis-sound-manager,
     ...
   }: let
     inherit (nixpkgs) lib;
+
+    # One nixosConfigurations output per host, named after its hostname and
+    # defined in modules/hosts/<host>/. The shell picks one from NIX_HOST in
+    # ~/.nix-host (see the dotfiles zsh setup).
+    hosts = [
+      "azepc-main"
+      "azelap-x1g9"
+      "azelap-p16g5"
+      "azelap-ga502"
+    ];
 
     mkPkgs = system:
       import nixpkgs {
@@ -32,31 +46,33 @@
         ];
       };
 
-    mkNixos = system: modules:
+    mkHost = hostName:
       lib.nixosSystem {
         inherit system;
         specialArgs = {inherit inputs;};
-        modules =
-          modules
-          ++ [
-            {
-              nixpkgs.pkgs = mkPkgs system;
+        modules = [
+          ./modules/hosts/${hostName}
+          ./modules/system/system.nix
+          home-manager.nixosModules.home-manager
+          {
+            networking.hostName = hostName;
+            nixpkgs.pkgs = mkPkgs system;
 
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                backupFileExtension = "hm-backup";
-                overwriteBackup = true;
-                extraSpecialArgs = {inherit inputs;};
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "hm-backup";
+              overwriteBackup = true;
+              extraSpecialArgs = {inherit inputs;};
 
-                users.tomalaci = {
-                  imports = [
-                    ./modules/home/home.nix
-                  ];
-                };
+              users.tomalaci = {
+                imports = [
+                  ./modules/home/home.nix
+                ];
               };
-            }
-          ];
+            };
+          }
+        ];
       };
 
     system = "x86_64-linux";
@@ -64,14 +80,7 @@
   in {
     overlays.default = import ./modules/overlays/default.nix;
 
-    nixosConfigurations = {
-      desktop = mkNixos "x86_64-linux" [
-        ./modules/hosts/desktop.nix
-        ./modules/system/system.nix
-        home-manager.nixosModules.home-manager
-        arctis-sound-manager.nixosModules.default
-      ];
-    };
+    nixosConfigurations = lib.genAttrs hosts mkHost;
 
     homeConfigurations.tomalaci = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;

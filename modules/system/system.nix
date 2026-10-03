@@ -13,13 +13,14 @@
     auto-optimise-store = true;
   };
   hardware.enableRedistributableFirmware = true;
+  hardware.graphics.enable = true;
 
-  # System submodules
+  # System submodules shared by every host. Hosts import the optional ones
+  # (gaming, laptop, peripherals, usenet) from modules/hosts/<host>/.
   imports = [
     ./backup.nix
     ./boot.nix
     ./fonts.nix
-    ./gaming.nix
     ./kde.nix
     ./locale.nix
     ./programs.nix

@@ -1,3 +1,5 @@
+# azepc-main: AMD Ryzen + NVIDIA RTX desktop. Storage is set up by hand (not
+# disko): three LUKS NVMe drives in one Btrfs RAID1 pool plus ext4 SATA drives.
 {
   config,
   modulesPath,
@@ -5,11 +7,13 @@
 }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
+    ../../system/gaming.nix
+    ../../system/peripherals.nix
+    ../../system/usenet.nix
   ];
 
   # === GENERAL ===
   nixpkgs.hostPlatform = "x86_64-linux";
-  networking.hostName = "azepc-main";
 
   # === BACKUP ===
   # Storage Box sub-account with home directory backups/azepc-main.
