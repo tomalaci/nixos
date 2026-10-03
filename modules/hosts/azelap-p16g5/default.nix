@@ -1,7 +1,12 @@
-# azelap-p16g5: ThinkPad P16s Gen 5 Intel (Core Ultra, Arrow Lake) with an NVIDIA
-# RTX PRO 500 Blackwell; company laptop. nixos-hardware has no profile for this
-# generation yet, so it combines the generic ThinkPad, Intel, and NVIDIA ones.
-{inputs, ...}: {
+# azelap-p16g5: ThinkPad P16s Gen 5 Intel (21XE, Core Ultra 7 356H, Panther
+# Lake) with an NVIDIA RTX PRO 500 Blackwell and Intel Wi-Fi 7 (8086:e340);
+# company laptop. nixos-hardware has no profile for this generation yet, so it
+# combines the generic ThinkPad, Intel, and NVIDIA ones.
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
     ./hardware.nix
     ./disko.nix
@@ -14,9 +19,18 @@
     "${inputs.nixos-hardware}/common/gpu/nvidia/prime.nix"
   ];
 
+  # Panther Lake graphics need the xe driver (i915 does not support it; the
+  # nixos-hardware default) and a recent kernel, as does the Wi-Fi 7 card.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  hardware.intelgpu = {
+    driver = "xe";
+    vaapiDriver = "intel-media-driver";
+  };
+
   # PRIME offload: Intel graphics by default, `nvidia-offload <command>` for the
   # NVIDIA GPU, which powers down when idle. Check both IDs with
-  # `lspci -D | grep -E 'VGA|3D'` (0000:01:00.0 is PCI:1:0:0).
+  # `lspci -D | grep -E 'VGA|3D'` (0000:01:00.0 is PCI:1:0:0); checked on the
+  # machine.
   hardware.nvidia = {
     prime = {
       intelBusId = "PCI:0:2:0";
