@@ -46,8 +46,8 @@ a link.
   idle priority, cap builds with `--max-jobs 1 --cores 6`, report to
   `~/.local/state/ai-jobs/<job>/`, and never switch, merge, or push. A job that
   downloads or builds must not catch up at login (`Persistent = false`).
-- `flake-update-<date>` branches and their `.worktrees/` are created by the
-  daily flake job; leave them to it unless the user asks.
+- Flake inputs are updated by hand (`nix flake update`); do not update
+  `flake.lock` unless the user asks.
 
 ## Validation
 

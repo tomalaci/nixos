@@ -55,8 +55,7 @@ NIX_HOST=azelap-x1g9
 
 The dotfiles `nh` wrapper passes `-H "$NIX_HOST"` to `nh os switch/boot/test/build`
 and refuses to run when `NIX_HOST` is unset or names another machine (a fresh
-install, still called `nixos`, is allowed; an explicit `-H` overrides). The
-daily flake update job also builds the `NIX_HOST` system.
+install, still called `nixos`, is allowed; an explicit `-H` overrides).
 
 Common to all hosts:
 
@@ -97,8 +96,7 @@ PRIME bus IDs in the host file against `lspci -D` on the machine.
 ├── keys/
 │   └── tomalaci.pub   # main SSH key, authorized on every host
 ├── scripts/
-│   ├── flake-update-check.py  # daily flake update job (see Scheduled jobs)
-│   └── install-host.py        # install a host with nixos-anywhere
+│   └── install-host.py  # install a host with nixos-anywhere
 ├── AGENTS.md          # instructions for AI agents working in this repository
 ├── README.md
 ├── flake.lock
@@ -248,15 +246,19 @@ notification.
 
 | Job | When | Missed runs | What it does |
 |---|---|---|---|
-| `flake-update-check` | daily 11:00 | skipped (next day) | `scripts/flake-update-check.py`: in a worktree, `nix flake update`, build with at most 6 cores (`--max-jobs 1 --cores 6`), `nvd diff` against the running system, commit `flake.lock` on a local `flake-update-<date>` branch, and a Claude summary with a verdict. Never switches, merges, or pushes. |
 | `ai-health` | Sundays 10:50 | caught up at next login | `ai-health --notify`: smoke-tests the Codex, DeepSeek, and Claude CLIs and both MCP servers; notifies only on failure |
 | `ai-stats-report` | Sundays 11:00 | caught up at next login | `ai-stats report`: agent statistics for the last 7 and 30 days |
 
-Apply a flake update from its report: `git cherry-pick flake-update-<date>` in
-this repository (the branch holds one `flake.lock` commit), then switch. Earlier job branches are removed automatically
-unless they contain other commits. Inspect timers with
-`systemctl --user list-timers` and logs with
-`journalctl --user -u flake-update-check`.
+Inspect timers with `systemctl --user list-timers` and logs with
+`journalctl --user -u ai-health`.
+
+Flake inputs are updated by hand:
+
+```sh
+cd ~/src/nixos && nix flake update
+nh os build              # build and show the package diff (nvd) without switching
+nh os switch             # apply, then commit and push flake.lock
+```
 
 ## Backups
 

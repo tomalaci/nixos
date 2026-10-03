@@ -1,8 +1,7 @@
 # Scheduled AI and maintenance jobs as systemd user timers. They run in the
 # background with no window; results go to ~/.local/state/ai-jobs/<job>/ with a
-# single desktop notification. Nothing here runs during boot or login except
-# the weekly ai-health check and ai-stats report, which catch up when missed:
-# both are light and download nothing.
+# single desktop notification. Both jobs are light and download nothing, so
+# they catch up at login when missed.
 {config, ...}: let
   home = config.home.homeDirectory;
   # Keep background jobs from competing with interactive work.
@@ -14,21 +13,6 @@
 in {
   systemd.user = {
     services = {
-      flake-update-check = {
-        Unit = {
-          Description = "Daily flake update check: build, diff, and AI summary (no switch)";
-          # Laptops skip the build on battery; true on machines without a battery.
-          ConditionACPower = true;
-        };
-        Service =
-          lowPriority
-          // {
-            Type = "oneshot";
-            ExecStart = "${home}/src/nixos/scripts/flake-update-check.py";
-            # Builds may compile uncached packages (capped at 6 cores by the script).
-            TimeoutStartSec = "5h";
-          };
-      };
       ai-health = {
         Unit.Description = "Weekly agent health check (notifies only on failure)";
         Service =
@@ -52,15 +36,6 @@ in {
     };
 
     timers = {
-      flake-update-check = {
-        Unit.Description = "Daily flake update check at 11:00";
-        # Missed runs are skipped, never replayed at login: the next one is tomorrow.
-        Timer = {
-          OnCalendar = "*-*-* 11:00:00";
-          Persistent = false;
-        };
-        Install.WantedBy = ["timers.target"];
-      };
       ai-health = {
         Unit.Description = "Weekly agent health check on Sundays at 10:50";
         # Missed runs catch up at the next login: a few small API calls, no downloads.
