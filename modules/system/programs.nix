@@ -151,6 +151,7 @@
       trippy
       wget
       httpie
+      restic
 
       # Media utilities
       yt-dlp
