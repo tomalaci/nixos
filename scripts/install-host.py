@@ -283,6 +283,9 @@ def main() -> None:
                 "nixos-anywhere failed; the target is still in the installer, so rerun"
             )
 
+    # nixos-generate-config's output is not in this repository's format (.ai/check).
+    subprocess.run(["alejandra", "-q", str(host_dir / "hardware.nix")], check=False)
+
     print(f"Set the login password of {USER} on the new system:")
     while (
         subprocess.run(
