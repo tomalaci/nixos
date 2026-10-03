@@ -1,6 +1,17 @@
 # This module configures the system boot process, including the bootloader and kernel parameters.
 # Also provides generally better boot experience
-{...}: {
+{lib, ...}: {
+  # disko's VM test (nixos-anywhere --vm-test) formats LUKS with the dummy key
+  # "secretsecret" and must type it at boot; without Plymouth the prompt is on
+  # the serial console where the test can answer it.
+  disko.tests = {
+    extraConfig.boot.plymouth.enable = lib.mkForce false;
+    bootCommands = ''
+      machine.wait_for_console_text("Please enter passphrase")
+      machine.send_console("secretsecret\n")
+    '';
+  };
+
   boot = {
     # Plymouth boot splash screen
     plymouth = {
@@ -9,7 +20,7 @@
     };
 
     # Enable silent boot and reduce log verbosity
-    consoleLogLevel = 3;
+    consoleLogLevel = lib.mkDefault 3;
     initrd.verbose = false;
     kernelParams = [
       "quiet"

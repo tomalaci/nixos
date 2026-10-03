@@ -13,5 +13,8 @@
       "docker"
     ];
     shell = pkgs.zsh;
+    # Main SSH key (also curl-able onto the NixOS installer; README.md,
+    # "Installing a host"). Password login is disabled in services.nix.
+    openssh.authorizedKeys.keyFiles = [../../keys/tomalaci.pub];
   };
 }

@@ -94,8 +94,11 @@ PRIME bus IDs in the host file against `lspci -D` on the machine.
 ```text
 .
 ├── .ai/check          # fast repository check (run by agents after edits)
+├── keys/
+│   └── tomalaci.pub   # main SSH key, authorized on every host
 ├── scripts/
-│   └── flake-update-check.py  # daily flake update job (see Scheduled jobs)
+│   ├── flake-update-check.py  # daily flake update job (see Scheduled jobs)
+│   └── install-host.py        # install a host with nixos-anywhere
 ├── AGENTS.md          # instructions for AI agents working in this repository
 ├── README.md
 ├── flake.lock
@@ -331,46 +334,45 @@ another machine that has this repository: it partitions the disk with disko,
 writes `hardware.nix`, and installs the host's full configuration, so there is
 no intermediate basic NixOS to rebuild from.
 
+`scripts/install-host.py` runs the whole install from this machine:
+
 1. On the laptop, in the firmware setup, disable Secure Boot (systemd-boot is
    unsigned) and, on the P16s, set storage to AHCI if it offers Intel VMD/RST.
-   Boot the NixOS minimal ISO from USB, connect to the network (`nmtui`), run
-   `passwd` to give the `nixos` user a password, and note the address
-   (`ip -br a`) and the disk (`ls -l /dev/disk/by-id`).
-2. In `modules/hosts/<host>/disko.nix`, set `device` to that
-   `/dev/disk/by-id/...` path.
-3. From the other machine, in `~/src/nixos` (the passphrase file is only read
-   while formatting; the passphrase is typed at every boot):
+   Boot the NixOS minimal ISO from USB, connect to the network (`nmtui`),
+   authorize your main SSH key, and note the address (`ip -br a`):
 
    ```sh
-   host=azelap-x1g9
-   read -rs 'pw?LUKS passphrase: ' && printf %s "$pw" > /tmp/luks.key && unset pw
-   nix run github:nix-community/nixos-anywhere -- \
-     --flake .#$host \
-     --generate-hardware-config nixos-generate-config ./modules/hosts/$host/hardware.nix \
-     --disk-encryption-keys /tmp/secret.key /tmp/luks.key \
-     --no-reboot \
-     --target-host nixos@<address>
-   rm /tmp/luks.key
-   ssh -t nixos@<address> sudo nixos-enter --root /mnt -c "'passwd tomalaci'"
-   ssh nixos@<address> sudo reboot
+   mkdir -p ~/.ssh && curl -fsSL https://raw.githubusercontent.com/tomalaci/nixos/main/keys/tomalaci.pub > ~/.ssh/authorized_keys
    ```
 
-   Commit the generated `hardware.nix`.
-4. On the laptop, log in and clone the repositories into the paths the
-   out-of-store links expect, then name the host:
+   (`curl -fsSL https://github.com/tomalaci.keys` gives the same key plus your
+   other GitHub keys. Without either, run `passwd` instead and the script asks
+   for that password.)
+2. Commit everything in `~/src/nixos`, `~/src/dotfiles`, and `~/src/ai-config`
+   (the laptop gets their committed state), then run, in `~/src/nixos`:
 
    ```sh
-   mkdir -p ~/src && cd ~/src
-   git clone https://github.com/tomalaci/nixos.git
-   git clone --recurse-submodules https://github.com/tomalaci/dotfiles.git
-   git clone https://github.com/tomalaci/ai-config.git
-   echo 'NIX_HOST=azelap-x1g9' > ~/.nix-host
+   scripts/install-host.py azelap-x1g9 nixos@<address>
    ```
 
-   Open a new shell (the dotfiles and `ai-*` links now resolve), set up SSH
-   keys and `gh auth login`, switch the remotes to SSH, and run `nh os switch`
-   once so Home Manager finishes the per-device setup.
+   It logs in with `~/.ssh/id_ed25519` (`--key` picks another key), refuses unless the target runs the
+   live installer, lists the internal disks and writes the chosen
+   `/dev/disk/by-id/` path into the host's `disko.nix`, and asks you to type the
+   host name before erasing it. It then asks for the LUKS passphrase (typed at
+   every boot; only a temporary file under `$XDG_RUNTIME_DIR` holds it during
+   the install) and runs nixos-anywhere, which partitions with disko, writes
+   `hardware.nix`, and installs. Clones of the three repositories and a
+   `~/.nix-host` naming the host are placed in the new home directory, so the
+   out-of-store links resolve at first login without GitHub credentials.
+   Finally it sets the `tomalaci` password and reboots.
+3. Commit and push the changed `disko.nix` and `hardware.nix`.
+4. On the laptop, enter the LUKS passphrase and log in. Set up SSH keys and
+   `gh auth login`, `git pull` in `~/src/nixos`, and run `nh os switch` once.
 5. Optionally set up backups for the host (see Backups).
+
+Check a host's disk layout without hardware first: `nix run
+github:nix-community/nixos-anywhere -- --vm-test --flake .#<host>` partitions,
+installs, and boots it in a VM.
 
 Without a second machine, the same configuration installs from the USB
 installer itself: clone this repository there, write the passphrase to
