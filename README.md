@@ -42,7 +42,7 @@ hostname, and embeds Home Manager for `tomalaci`.
 |---|---|---|---|
 | `azepc-main` | AMD Ryzen desktop, NVIDIA RTX | hand-made: 3 LUKS NVMe in Btrfs RAID1, ext4 SATA drives | gaming, peripherals, usenet; backups on |
 | `azelap-x1g9` | ThinkPad X1 Carbon Gen 9, Intel graphics only | disko: one LUKS + Btrfs disk | laptop |
-| `azelap-p16g5` | ThinkPad P16s Gen 5 Intel, RTX PRO 500 Blackwell (company laptop) | disko: one LUKS + Btrfs disk | laptop; NVIDIA PRIME offload |
+| `azelap-p16g5` | ThinkPad P16s Gen 5 Intel (Panther Lake), RTX PRO 500 Blackwell (company laptop) | disko: one LUKS + Btrfs disk | laptop, gaming; NVIDIA PRIME offload, latest kernel |
 | `azelap-ga502` | ASUS ROG Zephyrus G15 GA502IV, Ryzen 4000, RTX 2060 | disko: one LUKS + Btrfs disk | laptop, gaming; NVIDIA PRIME offload, asusd |
 | `azehost-example` | template for new hosts, never installed | disko example | laptop |
 

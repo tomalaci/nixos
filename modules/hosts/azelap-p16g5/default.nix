@@ -1,7 +1,7 @@
 # azelap-p16g5: ThinkPad P16s Gen 5 Intel (21XE, Core Ultra 7 356H, Panther
 # Lake) with an NVIDIA RTX PRO 500 Blackwell and Intel Wi-Fi 7 (8086:e340);
-# company laptop. nixos-hardware has no profile for this generation yet, so it
-# combines the generic ThinkPad, Intel, and NVIDIA ones.
+# company laptop, also used for gaming. nixos-hardware has no profile for this
+# generation yet, so it combines the generic ThinkPad, Intel, and NVIDIA ones.
 {
   inputs,
   pkgs,
@@ -11,6 +11,7 @@
     ./hardware.nix
     ./disko.nix
     ../../system/laptop.nix
+    ../../system/gaming.nix
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc-ssd
