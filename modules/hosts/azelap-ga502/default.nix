@@ -1,5 +1,9 @@
 # azelap-ga502: ASUS ROG Zephyrus G15 GA502IV (Ryzen 4000, NVIDIA RTX 2060).
-{inputs, ...}: {
+{
+  inputs,
+  lib,
+  ...
+}: {
   imports = [
     ./hardware.nix
     ./disko.nix
@@ -10,10 +14,15 @@
     inputs.nixos-hardware.nixosModules.asus-zephyrus-ga502
   ];
 
-  # Let the NVIDIA GPU power down when idle.
-  hardware.nvidia.powerManagement = {
-    enable = true;
-    finegrained = true;
+  hardware.nvidia = {
+    # The profile assumes the Radeon iGPU at PCI:6:0:0; on this unit it is at
+    # 0000:05:00.0 (checked with lspci). The NVIDIA GPU is at PCI:1:0:0.
+    prime.amdgpuBusId = lib.mkForce "PCI:5:0:0";
+    # Let the NVIDIA GPU power down when idle.
+    powerManagement = {
+      enable = true;
+      finegrained = true;
+    };
   };
 
   # asusd (asusctl): fan profiles, keyboard backlight, and battery charge limit.
