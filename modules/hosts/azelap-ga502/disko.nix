@@ -9,7 +9,7 @@ in {
   # laptop) before installing: everything on it is erased.
   disko.devices.disk.main = {
     type = "disk";
-    device = "/dev/nvme0n1";
+    device = "/dev/disk/by-id/nvme-WDC_PC_SN530_SDBPNPZ-1T00-1002_20246B443704";
     content = {
       type = "gpt";
       partitions = {
