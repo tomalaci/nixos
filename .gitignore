@@ -31,3 +31,4 @@ temp/
 logs/
 cache/
 backup/
+__pycache__
