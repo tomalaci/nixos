@@ -210,22 +210,33 @@ unless they contain other commits. Inspect timers with
 
 ## Backups
 
-`modules/system/backup.nix` (the disks are already RAID1; this covers deletion
-and losing the machine):
+`modules/system/backup.nix` defines `local.backup`, which each host turns on in
+`modules/hosts/<host>.nix` (the desktop's disks are already RAID1; this covers
+deletion and losing a machine):
 
-- `btrbk-home`: hourly read-only snapshots of `/home` in `/.snapshots/home`
-  (48 hourly, 14 daily, 4 weekly). Restore a file by copying it back out.
-- `restic-backups-storagebox`: daily at 12:30 (caught up after boot), an
-  encrypted restic backup of the irreplaceable parts of the home directory
-  (`src`, `.ssh`, `.secrets`, Foundry VTT data, agent state, documents) to the
-  Hetzner Storage Box over SFTP on port 23, then a 2% data check. Keeps 7 daily,
-  4 weekly, and 6 monthly snapshots. A failure sends a desktop notification.
-- Root-only secrets, never committed: `/etc/restic/storagebox` (SSH key; its
-  public half is in the box's `.ssh/authorized_keys`) and
-  `/etc/restic/password` (repository password, also kept in Proton Pass).
-- Inspect or restore with `sudo restic-storagebox snapshots` and
-  `sudo restic-storagebox restore <id> --target <dir>`; logs with
-  `journalctl -u restic-backups-storagebox`.
+- `restic-backups-storagebox`: daily at 12:30 (caught up after boot; with
+  `onlyOnAC`, skipped on battery), an encrypted restic backup of the
+  irreplaceable parts of the home directory (`src`, `.ssh`, `.secrets`, agent
+  state, documents, plus host `extraPaths`) to the Hetzner Storage Box, then a
+  2% data check. Keeps 7 daily, 4 weekly, and 6 monthly snapshots. A failure
+  sends a desktop notification.
+- One repository per host, each under its own Storage Box sub-account
+  (`boxUser`) whose home directory is `backups/<hostname>`: a lost or
+  compromised device reaches only its own backups. The main account's
+  credentials stay in Proton Pass, on no machine. The box's automatic snapshots
+  protect against anything holding a host's key.
+- `btrbk-home` (`snapshots = true`, needs `/home` and `/.snapshots` Btrfs
+  subvolumes): hourly read-only snapshots in `/.snapshots/home` (48 hourly, 14
+  daily, 4 weekly). Restore a file by copying it back out.
+
+Adding a host: create a sub-account in the Hetzner Console (SSH on, external
+reachability on, home directory `backups/<hostname>`), set `local.backup` in
+the host file, then as root create `/etc/restic/storagebox` (SSH key, installed
+with `ssh-copy-id -p 23 -s -i /etc/restic/storagebox <sub-account>@<sub-account>.your-storagebox.de`)
+and `/etc/restic/password` (also saved in Proton Pass). Inspect or restore with
+`sudo restic-storagebox snapshots` and
+`sudo restic-storagebox restore <id> --target <dir>`; logs with
+`journalctl -u restic-backups-storagebox`.
 
 ## Remote agent access
 

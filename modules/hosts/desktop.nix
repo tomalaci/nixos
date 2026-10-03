@@ -11,6 +11,15 @@
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = "azepc-main";
 
+  # === BACKUP ===
+  # Storage Box sub-account with home directory backups/azepc-main.
+  local.backup = {
+    enable = true;
+    boxUser = "u682168-sub1";
+    extraPaths = [".local/share/foundry-vtt"];
+    snapshots = true;
+  };
+
   # === BOOT ===
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "sd_mod"];
   boot.initrd.kernelModules = [];
