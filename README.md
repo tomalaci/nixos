@@ -104,7 +104,6 @@ PRIME bus IDs in the host file against `lspci -D` on the machine.
 └── modules/
     ├── home/
     │   ├── ai-config.nix
-    │   ├── claude-presence.nix
     │   ├── dotfiles.nix
     │   ├── home.nix
     │   ├── programs.nix
@@ -293,12 +292,8 @@ and `/etc/restic/password` (also saved in Proton Pass). Inspect or restore with
 ## Remote agent access
 
 Start `claude remote-control` (or `/remote-control` in a session) by hand to
-drive sessions on this PC from claude.ai/code or the Claude app.
-`modules/home/claude-presence.nix` runs `claude-presence` (`ai-presence`), which
-keeps `$XDG_RUNTIME_DIR/claude-present` in step with the screen lock; Claude
-Code skips mobile push notifications while that file exists
-(`CLAUDE_CLIENT_PRESENCE_FILE`), so they arrive only while the screen is locked.
-`tmux` is installed for SSH over Tailscale.
+drive sessions on this PC from claude.ai/code or the Claude app. `tmux` is
+installed for SSH over Tailscale.
 
 ## Commands
 

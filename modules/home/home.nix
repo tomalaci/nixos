@@ -48,6 +48,5 @@
     ./shell.nix
     ./programs.nix
     ./scheduled-jobs.nix
-    ./claude-presence.nix
   ];
 }
