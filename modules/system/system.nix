@@ -16,6 +16,7 @@
 
   # System submodules
   imports = [
+    ./backup.nix
     ./boot.nix
     ./fonts.nix
     ./gaming.nix

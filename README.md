@@ -208,6 +208,25 @@ unless they contain other commits. Inspect timers with
 `systemctl --user list-timers` and logs with
 `journalctl --user -u flake-update-check`.
 
+## Backups
+
+`modules/system/backup.nix` (the disks are already RAID1; this covers deletion
+and losing the machine):
+
+- `btrbk-home`: hourly read-only snapshots of `/home` in `/.snapshots/home`
+  (48 hourly, 14 daily, 4 weekly). Restore a file by copying it back out.
+- `restic-backups-storagebox`: daily at 12:30 (caught up after boot), an
+  encrypted restic backup of the irreplaceable parts of the home directory
+  (`src`, `.ssh`, `.secrets`, Foundry VTT data, agent state, documents) to the
+  Hetzner Storage Box over SFTP on port 23, then a 2% data check. Keeps 7 daily,
+  4 weekly, and 6 monthly snapshots. A failure sends a desktop notification.
+- Root-only secrets, never committed: `/etc/restic/storagebox` (SSH key; its
+  public half is in the box's `.ssh/authorized_keys`) and
+  `/etc/restic/password` (repository password, also kept in Proton Pass).
+- Inspect or restore with `sudo restic-storagebox snapshots` and
+  `sudo restic-storagebox restore <id> --target <dir>`; logs with
+  `journalctl -u restic-backups-storagebox`.
+
 ## Remote agent access
 
 Start `claude remote-control` (or `/remote-control` in a session) by hand to
