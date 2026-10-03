@@ -2,17 +2,13 @@
 {inputs, ...}: {
   imports = [
     ./hardware.nix
-    ../../disko/laptop.nix
+    ./disko.nix
     ../../system/laptop.nix
     ../../system/gaming.nix
     # PRIME offload with the bus IDs of this model: AMD graphics by default,
     # `nvidia-offload <command>` (or Steam's launch options) for the NVIDIA GPU.
     inputs.nixos-hardware.nixosModules.asus-zephyrus-ga502
   ];
-
-  # Replace with the disk's /dev/disk/by-id/ path (ls -l /dev/disk/by-id on the
-  # laptop) before installing: everything on it is erased.
-  local.disko.device = "/dev/nvme0n1";
 
   # Let the NVIDIA GPU power down when idle.
   hardware.nvidia.powerManagement = {

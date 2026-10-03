@@ -30,8 +30,10 @@ a link.
 - Shared system settings go in `modules/system/`; hardware, storage, and the
   choice of optional modules (gaming, laptop, peripherals, usenet) go in the
   host's `modules/hosts/<host>/default.nix`. Laptop disks are declared with
-  disko (`modules/disko/laptop.nix`); never change a laptop's disko layout or
-  `local.disko.device` without the user, since it only applies on reinstall.
+  disko in `modules/hosts/<host>/disko.nix`; never change one without the
+  user, since it only applies on reinstall. New hosts start as a copy of
+  `modules/hosts/azehost-example/`, the template, which is evaluated but never
+  installed; keep its hints current when shared modules change.
 - Install system-wide tools in `modules/system/programs.nix` and desktop
   applications in `modules/home/programs.nix`. Keep one package per line in the
   existing groups, with a comment when the reason is not obvious.

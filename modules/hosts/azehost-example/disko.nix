@@ -1,34 +1,22 @@
-# Single-disk layout for laptops, applied by disko at install time (see
-# README.md, "Installing a host"): a 1 GiB EFI system partition and one LUKS
-# container with a Btrfs filesystem. The subvolumes match the desktop's
-# (@root, @home, @nix, @snapshots, @persist), so Docker on Btrfs and the btrbk
-# snapshots in modules/system/backup.nix work the same on every host.
+# Disk layout, applied by disko when the host is installed (README.md,
+# "Installing a host"). disko also generates fileSystems and boot.initrd.luks
+# from this, so default.nix and hardware.nix define neither. Changing it later
+# only takes effect on reinstall.
 #
-# The LUKS passphrase is read from /tmp/secret.key only while formatting; at
-# boot it is typed at the prompt. disko also generates fileSystems and
-# boot.initrd.luks from this, so a host using it defines neither.
-{
-  config,
-  lib,
-  inputs,
-  ...
-}: let
-  cfg = config.local.disko;
+# This is the single-disk layout every laptop uses: a 1 GiB EFI partition and
+# one LUKS container with a Btrfs filesystem. Keep the subvolume names: Docker
+# on Btrfs and the btrbk snapshots in modules/system/backup.nix (/home and
+# /.snapshots) rely on them. For more disks, add entries under disko.devices.disk
+# (examples: https://github.com/nix-community/disko/tree/master/example).
+_: let
   btrfsOptions = ["compress=zstd" "noatime"];
 in {
-  imports = [
-    inputs.disko.nixosModules.disko
-  ];
-
-  options.local.disko.device = lib.mkOption {
-    type = lib.types.str;
-    example = "/dev/disk/by-id/nvme-Samsung_SSD_980_PRO_1TB_S5GXNX0R000000X";
-    description = "Whole disk to install to. Everything on it is erased.";
-  };
-
-  config.disko.devices.disk.main = {
+  # FILL IN: the whole disk to install to, by its stable path. On the target,
+  # booted from the installer: ls -l /dev/disk/by-id (pick the nvme-... entry
+  # without -partN). Everything on it is erased.
+  disko.devices.disk.main = {
     type = "disk";
-    inherit (cfg) device;
+    device = "/dev/disk/by-id/nvme-EXAMPLE_SSD_1TB_S0000000000000";
     content = {
       type = "gpt";
       partitions = {
@@ -47,6 +35,7 @@ in {
           content = {
             type = "luks";
             name = "cryptroot";
+            # Read only while formatting; the passphrase is typed at every boot.
             passwordFile = "/tmp/secret.key";
             settings.allowDiscards = true;
             content = {

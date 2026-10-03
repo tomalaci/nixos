@@ -35,6 +35,8 @@
       "azelap-x1g9"
       "azelap-p16g5"
       "azelap-ga502"
+      # Template for new hosts, never installed; evaluated to keep it working.
+      "azehost-example"
     ];
 
     mkPkgs = system:
@@ -53,6 +55,9 @@
         modules = [
           ./modules/hosts/${hostName}
           ./modules/system/system.nix
+          # Hosts declare their disks in modules/hosts/<host>/disko.nix; without
+          # one (azepc-main) the module does nothing.
+          inputs.disko.nixosModules.disko
           home-manager.nixosModules.home-manager
           {
             networking.hostName = hostName;

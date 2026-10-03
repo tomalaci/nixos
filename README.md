@@ -41,9 +41,10 @@ hostname, and embeds Home Manager for `tomalaci`.
 | Host | Machine | Storage | Optional modules |
 |---|---|---|---|
 | `azepc-main` | AMD Ryzen desktop, NVIDIA RTX | hand-made: 3 LUKS NVMe in Btrfs RAID1, ext4 SATA drives | gaming, peripherals, usenet; backups on |
-| `azelap-x1g9` | ThinkPad X1 Carbon Gen 9, Intel graphics only | disko `laptop.nix` | laptop |
-| `azelap-p16g5` | ThinkPad P16s Gen 5 Intel, RTX PRO 500 Blackwell (company laptop) | disko `laptop.nix` | laptop; NVIDIA PRIME offload |
-| `azelap-ga502` | ASUS ROG Zephyrus G15 GA502IV, Ryzen 4000, RTX 2060 | disko `laptop.nix` | laptop, gaming; NVIDIA PRIME offload, asusd |
+| `azelap-x1g9` | ThinkPad X1 Carbon Gen 9, Intel graphics only | disko: one LUKS + Btrfs disk | laptop |
+| `azelap-p16g5` | ThinkPad P16s Gen 5 Intel, RTX PRO 500 Blackwell (company laptop) | disko: one LUKS + Btrfs disk | laptop; NVIDIA PRIME offload |
+| `azelap-ga502` | ASUS ROG Zephyrus G15 GA502IV, Ryzen 4000, RTX 2060 | disko: one LUKS + Btrfs disk | laptop, gaming; NVIDIA PRIME offload, asusd |
+| `azehost-example` | template for new hosts, never installed | disko example | laptop |
 
 Each machine names its host in `~/.nix-host` (never committed), which the
 dotfiles `.zshenv` exports:
@@ -70,7 +71,8 @@ Common to all hosts:
 - Locale: `en_US.UTF-8`
 
 Hardware and storage of the desktop are described in
-`modules/hosts/azepc-main/default.nix`. The machine is an AMD/NVIDIA desktop with AMD microcode, the NVIDIA production driver,
+`modules/hosts/azepc-main/default.nix`. The machine is an AMD/NVIDIA desktop
+with AMD microcode, the NVIDIA production driver,
 modesetting, NVIDIA power management, 32-bit graphics support, Bluetooth on
 boot, and Nouveau blacklisted.
 
@@ -80,7 +82,7 @@ The EFI system partition is mounted at `/boot`, and optional ext4 SATA mounts
 live under `/mnt/sata-a`, `/mnt/sata-b`, and `/mnt/sata-c`. This layout predates
 disko and is not managed by it.
 
-Laptops use `modules/disko/laptop.nix` on their single disk: a 1 GiB EFI
+Each laptop declares its disk in `modules/hosts/<host>/disko.nix`: a 1 GiB EFI
 partition and one LUKS container (`cryptroot`) with a Btrfs filesystem holding
 the same subvolumes as the desktop. disko formats the disk at install time and
 generates `fileSystems` and `boot.initrd.luks`, so laptop host files define
@@ -107,11 +109,13 @@ PRIME bus IDs in the host file against `lspci -D` on the machine.
     │   ├── programs.nix
     │   ├── scheduled-jobs.nix
     │   └── shell.nix
-    ├── disko/
-    │   └── laptop.nix     # single-disk LUKS + Btrfs layout
     ├── hosts/
+    │   ├── azehost-example/  # template: copy for a new host (hints inside)
+    │   │   ├── default.nix   # optional modules, nixos-hardware, GPU, backups
+    │   │   ├── disko.nix     # disk layout, applied at install
+    │   │   └── hardware.nix  # generated at install
     │   ├── azepc-main/default.nix
-    │   ├── azelap-x1g9/   # default.nix + hardware.nix (generated at install)
+    │   ├── azelap-x1g9/
     │   ├── azelap-p16g5/
     │   └── azelap-ga502/
     ├── overlays/
@@ -332,7 +336,7 @@ no intermediate basic NixOS to rebuild from.
    Boot the NixOS minimal ISO from USB, connect to the network (`nmtui`), run
    `passwd` to give the `nixos` user a password, and note the address
    (`ip -br a`) and the disk (`ls -l /dev/disk/by-id`).
-2. In `modules/hosts/<host>/default.nix`, set `local.disko.device` to that
+2. In `modules/hosts/<host>/disko.nix`, set `device` to that
    `/dev/disk/by-id/...` path.
 3. From the other machine, in `~/src/nixos` (the passphrase file is only read
    while formatting; the passphrase is typed at every boot):
@@ -375,8 +379,10 @@ installer itself: clone this repository there, write the passphrase to
 and commit a `hardware.nix` from
 `nixos-generate-config --no-filesystems --show-hardware-config` afterwards.
 
-Adding another host: create `modules/hosts/<hostname>/default.nix` (copy a
-laptop's), add the name to `hosts` in `flake.nix`, and follow the steps above.
+Adding another host: copy `modules/hosts/azehost-example/` to
+`modules/hosts/<hostname>/`, add the name to `hosts` in `flake.nix`, fill in
+the parts marked `FILL IN` (its `default.nix` lists the steps), and install it
+as above.
 
 ## Working with agents
 

@@ -4,7 +4,7 @@
 {inputs, ...}: {
   imports = [
     ./hardware.nix
-    ../../disko/laptop.nix
+    ./disko.nix
     ../../system/laptop.nix
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad
     inputs.nixos-hardware.nixosModules.common-cpu-intel
@@ -13,10 +13,6 @@
     "${inputs.nixos-hardware}/common/gpu/nvidia/blackwell"
     "${inputs.nixos-hardware}/common/gpu/nvidia/prime.nix"
   ];
-
-  # Replace with the disk's /dev/disk/by-id/ path (ls -l /dev/disk/by-id on the
-  # laptop) before installing: everything on it is erased.
-  local.disko.device = "/dev/nvme0n1";
 
   # PRIME offload: Intel graphics by default, `nvidia-offload <command>` for the
   # NVIDIA GPU, which powers down when idle. Check both IDs with

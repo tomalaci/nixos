@@ -2,7 +2,7 @@
 # replaces it with the output of
 # `nixos-generate-config --no-filesystems --show-hardware-config` (nixos-anywhere
 # does this with --generate-hardware-config; see README.md). Filesystems and
-# LUKS come from modules/disko/laptop.nix, not from here.
+# LUKS come from disko.nix, not from here.
 {
   lib,
   modulesPath,
