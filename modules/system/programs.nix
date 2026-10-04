@@ -193,7 +193,20 @@
       # LLM agents
       codex
       claude-code
-      dsh
+      # dsh >= 0.1.6 fails to start ("node-addon-require-builtin unsupported");
+      # workaround from https://github.com/numtide/llm-agents.nix/issues/9994.
+      # Remove once upstream fixes it.
+      (dsh.overrideAttrs (old: {
+        postInstall =
+          (old.postInstall or "")
+          + ''
+            substituteInPlace \
+              $out/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-app-boot/lib/index.js \
+              --replace-fail \
+              'createRequire(import.meta.url)("node-addon-require-builtin")' \
+              '{ requireBuiltin: createRequire(import.meta.url) }'
+          '';
+      }))
     ]);
 
   # Shared Codex config as the system layer (/etc/codex/config.toml), linked out
