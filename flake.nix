@@ -14,7 +14,10 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     llm-agents.url = "github:numtide/llm-agents.nix";
     arctis-sound-manager = {
-      url = "github:loteran/Arctis-Sound-Manager?dir=nix";
+      # Pinned: d38b07d (2026-10-04) runs scripts/generate_plasmoid_i18n.py in
+      # nix/package.nix but leaves it out of the source fileset, so the build
+      # fails. Unpin (drop the revision) once upstream fixes it.
+      url = "github:loteran/Arctis-Sound-Manager/bbb0fed06bbb379ef4af708337b3d959268bcffb?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
