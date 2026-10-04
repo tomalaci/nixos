@@ -163,7 +163,6 @@
 
       # Database and data service tools
       postgresql
-      clickhouse
       sqlite
 
       # Hardware utilities
@@ -189,8 +188,6 @@
       opentofu
       kubectl
       k9s
-      megasync
-      megacmd
     ])
     ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
       # LLM agents
