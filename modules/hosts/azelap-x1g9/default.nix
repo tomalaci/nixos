@@ -13,5 +13,6 @@
   #   enable = true;
   #   boxUser = "u682168-subN";
   #   snapshots = true;
+  #   onlyOnAC = true; # skip runs on battery; a missed run catches up later
   # };
 }
