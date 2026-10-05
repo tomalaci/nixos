@@ -43,12 +43,11 @@
     };
   };
 
-  # Backups: create a Storage Box sub-account first (README.md, "Backups"),
-  # then enable with its user name and snapshots = true.
-  # local.backup = {
-  #   enable = true;
-  #   boxUser = "u682168-subN";
-  #   snapshots = true;
-  #   onlyOnAC = true; # skip runs on battery; a missed run catches up later
-  # };
+  # Backups: Storage Box sub-account with home directory backups/azelap-p16g5.
+  local.backup = {
+    enable = true;
+    boxUser = "u682168-sub2";
+    snapshots = true;
+    onlyOnAC = true; # skip runs on battery; a missed run catches up later
+  };
 }
