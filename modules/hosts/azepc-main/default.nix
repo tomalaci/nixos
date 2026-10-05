@@ -51,21 +51,6 @@
   # AMD Ryzen series
   hardware.cpu.amd.updateMicrocode = true;
 
-  # === BLUETOOTH ===
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-    settings = {
-      General = {
-        Experimental = true;
-        FastConnectable = false;
-      };
-      Policy = {
-        AutoEnable = true;
-      };
-    };
-  };
-
   # === DISKS ===
   # 3x NVMe LUKS devices forming one Btrfs RAID1 pool.
   # All Btrfs subvolumes can be mounted through any opened mapper device.
