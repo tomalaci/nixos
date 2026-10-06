@@ -270,7 +270,9 @@ Code's sessions and project memories (`~/.claude/projects`) the same on all
 machines, so a session started on one resumes on another. It talks only to the
 listed devices, directly over Tailscale (port 22000 is open on `tailscale0`
 only; no discovery servers or relays). The `azelab` server lists the same
-devices and folder in its own repository. Replaced or deleted files are kept
+devices and folder in its own repository but only listens, since the tailnet
+policy blocks connections from it to the workstations; the workstations
+connect to it, and data flows both ways over that connection. Replaced or deleted files are kept
 for 30 days in `~/.local/state/syncthing/versions/`; files changed on two
 machines between syncs leave a `*.sync-conflict-*` copy on the machine where
 the conflict appeared. The web UI is at <http://127.0.0.1:8384>.

@@ -1,7 +1,8 @@
 # Syncthing keeps Claude Code's sessions and project memories
 # (~/.claude/projects) in step between machines, directly over Tailscale: no
 # discovery servers or relays. azelab (its own repository) lists the same
-# devices and folder.
+# devices and folder but only listens: the tailnet policy lets these machines
+# connect to it, not the reverse, so the workstations always dial azelab.
 #
 # Each machine's identity is the key pair in ~/.local/state/syncthing, made
 # once with `syncthing generate --home ~/.local/state/syncthing`; its device
