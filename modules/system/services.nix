@@ -1,6 +1,12 @@
 {...}: {
   # Network management
   networking.networkmanager.enable = true;
+  # DNS through systemd-resolved: NetworkManager sets each link's servers and
+  # Tailscale adds MagicDNS for the tailnet domain only. Without it, Tailscale
+  # rewrote /etc/resolv.conf to send all lookups through itself, and DNS could
+  # stay broken after resume from sleep until `tailscale down`/`up`.
+  services.resolved.enable = true;
+  networking.networkmanager.dns = "systemd-resolved";
   networking.firewall.enable = true;
 
   # SSH
