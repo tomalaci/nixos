@@ -14,6 +14,8 @@
 
   # Tailscale
   services.tailscale.enable = true;
+  # Syncthing (modules/home/syncthing.nix) between machines, on the tailnet only.
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [22000];
 
   # Virtualization
   # Note: "virtualisation" is the correct config option (spelled after the British English convention)

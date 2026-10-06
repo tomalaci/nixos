@@ -263,6 +263,25 @@ nh os build              # build and show the package diff (nvd) without switchi
 nh os switch             # apply, then commit and push flake.lock
 ```
 
+## Claude session sync
+
+`modules/home/syncthing.nix` runs Syncthing on every host to keep Claude
+Code's sessions and project memories (`~/.claude/projects`) the same on all
+machines, so a session started on one resumes on another. It talks only to the
+listed devices, directly over Tailscale (port 22000 is open on `tailscale0`
+only; no discovery servers or relays). The `azelab` server lists the same
+devices and folder in its own repository. Replaced or deleted files are kept
+for 30 days in `~/.local/state/syncthing/versions/`; files changed on two
+machines between syncs leave a `*.sync-conflict-*` copy on the machine where
+the conflict appeared. The web UI is at <http://127.0.0.1:8384>.
+
+Adding a machine: empty its `~/.claude/projects` (for example
+`mv ~/.claude/projects ~/.claude/projects.old`), run
+`syncthing generate --home ~/.local/state/syncthing` there, and add the
+printed device ID to `devices` in `modules/home/syncthing.nix` and in the
+azelab repository's `home/syncthing.nix`, then switch every machine. Resume a
+session on only one machine at a time.
+
 ## Backups
 
 `modules/system/backup.nix` defines `local.backup`, which each host turns on in
