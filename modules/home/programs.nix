@@ -18,6 +18,8 @@
     upscayl
     kdePackages.kcalc
     kdePackages.kdialog
+    # Browse and edit the KWallet keyring (also serves the Secret Service API).
+    kdePackages.kwalletmanager
     libreoffice
     godot
     blender

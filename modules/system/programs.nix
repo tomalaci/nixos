@@ -145,6 +145,13 @@
       yq
       openssl
 
+      # Clipboard for CLI tools (gh, scripts): wl-copy/wl-paste on Wayland,
+      # xclip for X11 and XWayland apps.
+      wl-clipboard
+      xclip
+      # secret-tool: read and store secrets in KWallet's Secret Service.
+      libsecret
+
       # Network utilities
       curl
       whois
