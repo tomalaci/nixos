@@ -182,6 +182,7 @@
       # Cloud services
       gh
       awscli2
+      ssm-session-manager-plugin
       hcloud
       cloudflared
       gdrive
