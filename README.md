@@ -12,6 +12,7 @@ direct-to-`main` workflow:
 | `~/src/nixos` (this repository) | NixOS and Home Manager: hardware, boot, services, installed packages, and the links that put the other two repositories' files into place |
 | `~/src/dotfiles` | Mutable application and shell configuration under `home/`: zsh, Starship, VS Code, mpv, Plasma, Dolphin, and `~/.local/bin` scripts |
 | `~/src/ai-config` | AI agent configuration (Claude Code, Codex, DeepSeek Harness): shared agent guidance, subagents, skills, hooks, and the `ai-*` commands |
+| `~/src/tomalaci/azelab` | The `azelab` remote dev server (private repo `tomalaci/azelab`): its own self-contained NixOS flake, not part of `~/src/nixos` |
 
 Files from `dotfiles` and `ai-config` are linked with out-of-store symlinks, so
 editing them takes effect immediately. New packages, new or moved links, and
@@ -45,6 +46,9 @@ hostname, and embeds Home Manager for `tomalaci`.
 | `azelap-p16g5` | ThinkPad P16s Gen 5 Intel (Panther Lake), RTX PRO 500 Blackwell (company laptop) | disko: one LUKS + Btrfs disk | laptop, gaming; NVIDIA PRIME offload, latest kernel |
 | `azelap-ga502` | ASUS ROG Zephyrus G15 GA502IV, Ryzen 4000, RTX 2060 | disko: one LUKS + Btrfs disk | laptop, gaming; NVIDIA PRIME offload, asusd |
 | `azehost-example` | template for new hosts, never installed | disko example | laptop |
+
+The `azelab` server (Hetzner AX42) is not a host of this flake: it is managed
+from its own private repository, `~/src/tomalaci/azelab`.
 
 Each machine names its host in `~/.nix-host` (never committed), which the
 dotfiles `.zshenv` exports:

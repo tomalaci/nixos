@@ -15,6 +15,7 @@ Each `nixosConfigurations` output is named after its hostname and defined in
 | `~/src/nixos` (this repository) | NixOS and Home Manager: hardware, boot, services, installed packages, and the out-of-store links into the other two repositories |
 | `~/src/dotfiles` | Mutable application and shell configuration under `home/`, linked by `modules/home/dotfiles.nix` |
 | `~/src/ai-config` | AI agent configuration and the `ai-*` commands, linked by `modules/home/ai-config.nix` (and `/etc/codex/config.toml` from `modules/system/programs.nix`) |
+| `~/src/tomalaci/azelab` | The `azelab` remote dev server: a separate, self-contained NixOS flake (private) |
 
 Change application or agent configuration in its own repository. Change this
 repository for packages, services, hardware, and for adding, moving, or removing
