@@ -48,5 +48,6 @@
     ./shell.nix
     ./programs.nix
     ./scheduled-jobs.nix
+    ./ssh.nix
   ];
 }
