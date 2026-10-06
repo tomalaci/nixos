@@ -19,7 +19,12 @@
   };
 
   # Tailscale
-  services.tailscale.enable = true;
+  services.tailscale = {
+    enable = true;
+    # Lets tomalaci run tailscale up/down/set without sudo (applied at boot by
+    # tailscaled-set.service).
+    extraSetFlags = ["--operator=tomalaci"];
+  };
   # Syncthing (modules/home/syncthing.nix) between machines, on the tailnet only.
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [22000];
 
