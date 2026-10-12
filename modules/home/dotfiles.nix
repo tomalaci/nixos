@@ -14,6 +14,8 @@ in {
       ".config/autostart/kde-fix-pinned-apps.desktop".source = dotfile "config/plasma/kde-fix-pinned-apps.desktop";
       ".local/share/kio/servicemenus/flatten-folders.desktop".source = dotfile "config/dolphin/flatten-folders.desktop";
       ".zshenv".source = dotfile "zsh/.zshenv";
+      # SSH client config; private, so hosts stay out of this public repository.
+      ".ssh/config".source = dotfile "ssh/config";
     };
     # home/local/bin scripts
     sessionPath = ["${dotfilesDir}/local/bin"];
