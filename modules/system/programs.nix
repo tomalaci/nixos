@@ -162,6 +162,7 @@
       wget
       httpie
       restic
+      sshpass
 
       # Media utilities
       yt-dlp
