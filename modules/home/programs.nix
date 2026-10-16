@@ -14,6 +14,7 @@
     krita
     qbittorrent
     slack
+    anydesk # remote help on sandalap-ga502 (~/src/tomalaci/nixos-sanda)
     vesktop
     upscayl
     kdePackages.kcalc

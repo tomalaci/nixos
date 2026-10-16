@@ -15,7 +15,7 @@
   devices = {
     azelab = "LVVD2PG-TWOSOHD-4F56VPL-VM76X7A-FOWJD2J-NEMKPTF-XCEARQB-EDLJDA6";
     azelap-p16g5 = "DLJMHMM-GSULGMR-SGESQ7F-OK7IMUM-VQUTB62-ORJ2LJ7-CWSZQNN-HWYBHAR";
-    # azepc-main, azelap-x1g9, azelap-ga502: add after `syncthing generate`
+    # azepc-main, azelap-x1g9: add after `syncthing generate`
     # there, with their ~/.claude/projects emptied first.
   };
 in {

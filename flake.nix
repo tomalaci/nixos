@@ -37,7 +37,6 @@
       "azepc-main"
       "azelap-x1g9"
       "azelap-p16g5"
-      "azelap-ga502"
       # Template for new hosts, never installed; evaluated to keep it working.
       "azehost-example"
     ];

@@ -1,7 +1,7 @@
 # nixos repository
 
 NixOS and Home Manager configuration for Tomalaci's machines: the desktop
-`azepc-main` and the laptops `azelap-x1g9`, `azelap-p16g5`, and `azelap-ga502`.
+`azepc-main` and the laptops `azelap-x1g9` and `azelap-p16g5`.
 Each `nixosConfigurations` output is named after its hostname and defined in
 `modules/hosts/<host>/`; the current machine's is `$NIX_HOST` (from
 `~/.nix-host`). The shared workstation guidance every agent loads is

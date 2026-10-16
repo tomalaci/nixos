@@ -44,7 +44,6 @@ hostname, and embeds Home Manager for `tomalaci`.
 | `azepc-main` | AMD Ryzen desktop, NVIDIA RTX | hand-made: 3 LUKS NVMe in Btrfs RAID1, ext4 SATA drives | gaming, peripherals, usenet; backups on |
 | `azelap-x1g9` | ThinkPad X1 Carbon Gen 9, Intel graphics only | disko: one LUKS + Btrfs disk | laptop |
 | `azelap-p16g5` | ThinkPad P16s Gen 5 Intel (Panther Lake), RTX PRO 500 Blackwell (company laptop) | disko: one LUKS + Btrfs disk | laptop, gaming; NVIDIA PRIME offload, latest kernel |
-| `azelap-ga502` | ASUS ROG Zephyrus G15 GA502IV, Ryzen 4000, RTX 2060 | disko: one LUKS + Btrfs disk | laptop, gaming; NVIDIA PRIME offload, asusd |
 | `azehost-example` | template for new hosts, never installed | disko example | laptop |
 
 The `azelab` server (Hetzner AX42) is not a host of this flake: it is managed
@@ -120,8 +119,7 @@ PRIME bus IDs in the host file against `lspci -D` on the machine.
     │   │   └── hardware.nix  # generated at install
     │   ├── azepc-main/default.nix
     │   ├── azelap-x1g9/
-    │   ├── azelap-p16g5/
-    │   └── azelap-ga502/
+    │   └── azelap-p16g5/
     ├── overlays/
     │   └── default.nix
     └── system/
@@ -331,7 +329,7 @@ nix flake check
 nix build .#nixosConfigurations.azepc-main.config.system.build.toplevel --no-link
 nix build .#homeConfigurations.tomalaci.activationPackage --no-link
 # Every host evaluates (cheap; catches errors in hosts you are not on):
-for h in azepc-main azelap-x1g9 azelap-p16g5 azelap-ga502; do
+for h in azepc-main azelap-x1g9 azelap-p16g5; do
   nix eval --raw .#nixosConfigurations.$h.config.system.build.toplevel.drvPath; echo
 done
 ```
